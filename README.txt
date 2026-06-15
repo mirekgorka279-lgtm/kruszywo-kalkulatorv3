@@ -1,0 +1,1 @@
+Pakiet PWA v61. Wgraj na GitHub Pages lub Netlify i dodaj do ekranu początkowego iPhone.
