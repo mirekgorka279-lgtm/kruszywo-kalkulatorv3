@@ -30,7 +30,9 @@ box-shadow:0 2px 10px rgba(0,0,0,.08)
 .header-brand{font-size:18px;font-weight:700}
 .wrap{max-width:1160px;margin:auto;padding:16px}
 .tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin-bottom:20px}
-.tile{background:#fff;padding:22px;border-radius:18px;box-shadow:0 6px 18px rgba(0,0,0,.10);text-align:center;font-weight:700;cursor:pointer;border:1px solid #e5e7eb;transition:.2s}.tile:hover{transform:translateY(-2px)}
+.tile{background:#fff;padding:22px;border-radius:18px;box-shadow:0 6px 18px rgba(0,0,0,.10);text-align:center;font-weight:700;cursor:pointer;border:1px solid #e5e7eb;transition:all .15s ease}
+.tile:hover{transform:translateY(-2px)}
+.tile:active{transform:scale(.96);filter:brightness(.92)}
 .card{background:#fff;padding:16px;border-radius:24px;margin-bottom:16px;box-shadow:0 4px 12px rgba(0,0,0,.08);border:1px solid #e5e7eb}
 .grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
 .grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px}
@@ -38,8 +40,12 @@ box-shadow:0 2px 10px rgba(0,0,0,.08)
 label{display:block;font-size:13px;font-weight:700;margin-bottom:4px;color:#111827}
 input,select,textarea{width:100%;padding:14px 16px;border-radius:16px;border:2px solid #d0d5dd;margin-top:6px;margin-bottom:10px;background:#fff;font-size:16px;box-sizing:border-box}
 textarea{min-height:140px;resize:vertical}
-button,.btn{padding:13px 18px;border:none;border-radius:16px;background:#111;color:#fff;font-weight:700;text-decoration:none;display:inline-block;cursor:pointer}
+button,.btn{padding:13px 18px;border:none;border-radius:16px;background:#111;color:#fff;font-weight:700;text-decoration:none;display:inline-block;cursor:pointer;transition:all .15s ease}
+button:hover,.btn:hover{filter:brightness(1.12)}
+button:active,.btn:active{filter:brightness(.85);transform:scale(.97)}
 button.secondary,.btn.secondary{background:#fff;color:#111;border:2px solid #d0d5dd}
+button.secondary:hover,.btn.secondary:hover{background:#f3f4f6}
+button.secondary:active,.btn.secondary:active{background:#e5e7eb;transform:scale(.97)}
 .hidden{display:none}
 .actions{display:flex;gap:12px;flex-wrap:wrap}
 .quote,.client-row{border-top:1px solid #e5e7eb;padding:16px 0}
