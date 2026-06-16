@@ -201,6 +201,49 @@ const defaultData = {
   "Zakole B": {rate:6.1, products:{"Kruszywo grube 2/8 mm":74,"Kruszywo grube 8/16 mm":74,"Kruszywo drobne 0/2 mm":35,"Kruszywo o ciągłym uziarnieniu 0/45 mm (surowiec)":47}},
   "Zator – Podolsze Nowe": {rate:6.0, products:{"Kruszywo grube 2/8 mm":74,"Kruszywo grube 8/16 mm":74,"Kruszywo grube 16/63 mm gat. II":61,"Kruszywo drobne 0/2 mm":36,"Ziemia nadkładowa gat. I":25}}
 };
+
+const SHEET_URL="https://docs.google.com/spreadsheets/d/e/2PACX-1vSojB-Hi7qRMgJLHQFFAhXVEX4VXMWt1T4q85_tG0cjW-lWRCkc8nxrvWQn56LNd1FXshFR0YIeejXC/pub?gid=0&single=true&output=csv";
+
+async function loadPricesFromSheet(){
+ try{
+  const res=await fetch(SHEET_URL);
+  const csv=await res.text();
+
+  const rows=csv.trim().split("\n");
+  rows.shift();
+
+  const sheetData={};
+
+  rows.forEach(row=>{
+   const cols=row.split(",");
+
+   if(cols.length<3) return;
+
+   const quarry=cols[0].trim();
+   const product=cols[1].trim();
+   const price=Number(cols[2].replace(",", "."));
+
+   if(!sheetData[quarry]){
+      sheetData[quarry]={rate:6,products:{}};
+   }
+
+   sheetData[quarry].products[product]=price;
+  });
+
+  if(Object.keys(sheetData).length){
+     priceData=sheetData;
+     fillSelectors();
+     if(typeof renderPriceEditor==="function") renderPriceEditor();
+     if(typeof syncPrice==="function") syncPrice();
+     if(typeof syncQuickPrice==="function") syncQuickPrice();
+     console.log("Załadowano cennik z Google Sheets");
+  }
+
+ }catch(err){
+   console.error("Błąd pobierania cennika:",err);
+ }
+}
+
 let clients = JSON.parse(localStorage.getItem("clients_v21b") || "null") || [{id:Date.now()+1,name:"Amper",phone:"45262737373",address:"Oświęcim",segment:"B",stage:"Stały klient",nextContact:"",notes:""}];
 let priceData = JSON.parse(localStorage.getItem("priceData_v21b") || "null") || defaultData;
 if(!priceData || typeof priceData!=="object" || !Object.keys(priceData).length){ priceData=defaultData; }
@@ -546,7 +589,7 @@ return 'Oferta_'+klient+'_'+d;
   w.print();
 }
 
-fillSelectors(); renderClients(); renderHistory(); syncPrice(); try{document.getElementById("quick").classList.add("hidden");}catch(e){} show("calc");
+fillSelectors(); loadPricesFromSheet(); renderClients(); renderHistory(); syncPrice(); try{document.getElementById("quick").classList.add("hidden");}catch(e){} show("calc");
 if ('serviceWorker' in navigator) { navigator.serviceWorker.register('./sw.js?v=21b'); }
 
 function savePriceStore(){localStorage.setItem('priceData_v21b',JSON.stringify(priceData));}
