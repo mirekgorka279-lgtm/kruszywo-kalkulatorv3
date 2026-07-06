@@ -206,7 +206,9 @@ const SHEET_URL="https://docs.google.com/spreadsheets/d/e/2PACX-1vSojB-Hi7qRMgJL
 
 async function loadPricesFromSheet(){
  try{
-  const res=await fetch(SHEET_URL);
+  const res = await fetch(SHEET_URL + "&t=" + Date.now(), {
+  cache: "no-store"
+});
   const csv=await res.text();
 
   const rows=csv.trim().split("\n");
