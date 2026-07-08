@@ -1,0 +1,880 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kalkulator kruszywa</title>
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#232323">
+<style>
+body{font-family:-apple-system,Arial,sans-serif;margin:0;background:#0aa84f;color:#101828}
+
+.header{
+background:#ffffff;
+color:#111;
+padding:20px 30px;
+display:flex;
+align-items:center;
+justify-content:center;
+gap:20px;
+border-bottom:4px solid #0aa84f;
+box-shadow:0 2px 10px rgba(0,0,0,.08)
+}
+
+.header-left{display:flex;align-items:center;gap:18px}
+.header-title{font-size:42px;font-weight:800}
+.header-sub{color:#D4A017;font-size:18px;font-weight:700;margin-top:6px}
+.header-brand img{height:90px}
+
+.header-title{font-size:20px;font-weight:700}
+.header-brand{font-size:18px;font-weight:700}
+.wrap{max-width:1160px;margin:auto;padding:16px}
+.tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin-bottom:20px}
+.tile{background:#fff;padding:22px;border-radius:18px;box-shadow:0 6px 18px rgba(0,0,0,.10);text-align:center;font-weight:700;cursor:pointer;border:1px solid #e5e7eb;transition:all .15s ease}
+.tile:hover{transform:translateY(-2px)}
+.tile:active{transform:scale(.96);filter:brightness(.92)}
+.card{background:#fff;padding:16px;border-radius:24px;margin-bottom:16px;box-shadow:0 4px 12px rgba(0,0,0,.08);border:1px solid #e5e7eb}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px}
+.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+label{display:block;font-size:13px;font-weight:700;margin-bottom:4px;color:#111827}
+input,select,textarea{width:100%;padding:14px 16px;border-radius:16px;border:2px solid #d0d5dd;margin-top:6px;margin-bottom:10px;background:#fff;font-size:16px;box-sizing:border-box}
+textarea{min-height:140px;resize:vertical}
+button,.btn{padding:13px 18px;border:none;border-radius:16px;background:#111;color:#fff;font-weight:700;text-decoration:none;display:inline-block;cursor:pointer;transition:all .15s ease}
+button:hover,.btn:hover{filter:brightness(1.12)}
+button:active,.btn:active{filter:brightness(.85);transform:scale(.97)}
+button.secondary,.btn.secondary{background:#fff;color:#111;border:2px solid #d0d5dd}
+button.secondary:hover,.btn.secondary:hover{background:#f3f4f6}
+button.secondary:active,.btn.secondary:active{background:#e5e7eb;transform:scale(.97)}
+.hidden{display:none}
+.actions{display:flex;gap:12px;flex-wrap:wrap}
+.quote,.client-row{border-top:1px solid #e5e7eb;padding:16px 0}
+.small{font-size:13px;color:#667085}
+textarea#offerBox{min-height:240px}
+.section-title{font-size:24px;font-weight:800;margin:0 0 18px}
+.badge{display:inline-flex;align-items:center;justify-content:center;min-width:38px;height:38px;border-radius:999px;background:#f6eebe;color:#111827;font-weight:800;font-size:14px;padding:0 10px}
+.client-actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:12px}
+.notice{font-size:13px;color:#667085;margin-top:-2px;margin-bottom:10px}
+.result-box{font-size:18px;font-weight:700;margin-top:8px;background:#fff8e1;padding:16px;border-radius:16px;border:2px solid #D4A017}
+@media (max-width:900px){.grid,.grid3,.grid4{grid-template-columns:1fr}.header{align-items:flex-start}}
+
+.quote-item-card{border:1px solid #e5e7eb;border-radius:14px;padding:12px;margin:8px 0;background:#fafafa}
+.quote-item-title{font-weight:700;font-size:16px}
+</style>
+</head>
+<body>
+<div class="header">
+  <div class="header-brand">
+    <img src="data:image/svg+xml;utf8,%3C%3Fxml%20version%3D%221.0%22%20encoding%3D%22utf-8%22%3F%3E%0A%3C%21--%20Generator%3A%20Adobe%20Illustrator%2023.0.2%2C%20SVG%20Export%20Plug-In%20.%20SVG%20Version%3A%206.00%20Build%200%29%20%20--%3E%0A%3Csvg%20version%3D%221.1%22%20id%3D%22Layer_1%22%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20xmlns%3Axlink%3D%22http%3A//www.w3.org/1999/xlink%22%20x%3D%220px%22%20y%3D%220px%22%0A%09%20width%3D%22254px%22%20height%3D%2259px%22%20viewBox%3D%220%200%20254%2059%22%20style%3D%22enable-background%3Anew%200%200%20254%2059%3B%22%20xml%3Aspace%3D%22preserve%22%3E%0A%3Cstyle%20type%3D%22text/css%22%3E%0A%09.st0%7Bfill%3A%23808285%3B%7D%0A%09.st1%7Bfill%3A%2300A651%3B%7D%0A%3C/style%3E%0A%3Cg%3E%0A%09%3Cg%3E%0A%09%09%3Cpath%20class%3D%22st0%22%20d%3D%22M64%2C47.7l-0.3%2C0.4v1.3h-0.9v-4.2h0.9v1.9l1.5-1.9h1.1l-1.7%2C2l1.8%2C2.2h-1.1L64%2C47.7z%22/%3E%0A%09%09%3Cpath%20class%3D%22st0%22%20d%3D%22M69.9%2C47.9h-0.7v1.5h-0.9v-4.2h2c0.9%2C0%2C1.4%2C0.6%2C1.4%2C1.3c0%2C0.7-0.5%2C1.1-0.9%2C1.2l0.9%2C1.6h-1L69.9%2C47.9z%0A%09%09%09%20M70.2%2C46h-0.9v1.2h0.9c0.4%2C0%2C0.6-0.2%2C0.6-0.6C70.8%2C46.2%2C70.6%2C46%2C70.2%2C46z%22/%3E%0A%09%09%3Cpath%20class%3D%22st0%22%20d%3D%22M76.7%2C48.7h-1.9l-0.3%2C0.7h-1l1.6-4.2h1.1l1.6%2C4.2h-1L76.7%2C48.7z%20M75.1%2C47.9h1.4L75.8%2C46L75.1%2C47.9z%22/%3E%0A%09%09%3Cpath%20class%3D%22st0%22%20d%3D%22M81.1%2C47.7l-0.3%2C0.4v1.3h-0.9v-4.2h0.9v1.9l1.5-1.9h1.1l-1.7%2C2l1.8%2C2.2h-1.1L81.1%2C47.7z%22/%3E%0A%09%09%3Cpath%20class%3D%22st0%22%20d%3D%22M87.3%2C45.1c1.3%2C0%2C2.2%2C0.9%2C2.2%2C2.2s-0.9%2C2.2-2.2%2C2.2c-1.3%2C0-2.2-0.9-2.2-2.2S86%2C45.1%2C87.3%2C45.1z%20M87.3%2C45.9%0A%09%09%09c-0.8%2C0-1.3%2C0.6-1.3%2C1.4c0%2C0.8%2C0.5%2C1.4%2C1.3%2C1.4c0.8%2C0%2C1.3-0.6%2C1.3-1.4C88.5%2C46.5%2C88%2C45.9%2C87.3%2C45.9z%22/%3E%0A%09%09%3Cpath%20class%3D%22st0%22%20d%3D%22M94%2C46.5l-0.7%2C2.9h-0.9l-1.2-4.2h1l0.7%2C3l0.8-3h0.7l0.8%2C3l0.7-3h1l-1.2%2C4.2h-0.9L94%2C46.5z%22/%3E%0A%09%09%3Cpath%20class%3D%22st0%22%20d%3D%22M99.1%2C48.1c0.3%2C0.3%2C0.8%2C0.6%2C1.3%2C0.6c0.5%2C0%2C0.7-0.2%2C0.7-0.5c0-0.3-0.4-0.4-0.8-0.5c-0.7-0.2-1.6-0.3-1.6-1.3%0A%09%09%09c0-0.7%2C0.6-1.3%2C1.6-1.3c0.7%2C0%2C1.2%2C0.2%2C1.6%2C0.6l-0.5%2C0.7c-0.3-0.3-0.8-0.5-1.2-0.5c-0.4%2C0-0.6%2C0.2-0.6%2C0.4c0%2C0.3%2C0.4%2C0.4%2C0.8%2C0.5%0A%09%09%09c0.7%2C0.2%2C1.6%2C0.4%2C1.6%2C1.3c0%2C0.8-0.5%2C1.3-1.7%2C1.3c-0.8%2C0-1.4-0.3-1.8-0.7L99.1%2C48.1z%22/%3E%0A%09%09%3Cpath%20class%3D%22st0%22%20d%3D%22M105.5%2C47.7l-0.3%2C0.4v1.3h-0.9v-4.2h0.9v1.9l1.5-1.9h1.1l-1.7%2C2l1.8%2C2.2h-1.1L105.5%2C47.7z%22/%3E%0A%09%09%3Cpath%20class%3D%22st0%22%20d%3D%22M109.9%2C45.2h0.9v4.2h-0.9V45.2z%22/%3E%0A%09%09%3Cpath%20class%3D%22st0%22%20d%3D%22M113.3%2C45.2h3V46h-2.1v0.9h2v0.8h-2v1h2.1v0.8h-3V45.2z%22/%3E%0A%09%09%3Cpath%20class%3D%22st0%22%20d%3D%22M121.6%2C48.7l2-2.7h-2v-0.8h3.1v0.7l-2%2C2.7h2v0.8h-3.2V48.7z%22/%3E%0A%09%09%3Cpath%20class%3D%22st0%22%20d%3D%22M129.8%2C48.7h-1.9l-0.3%2C0.7h-1l1.6-4.2h1.1l1.6%2C4.2h-1L129.8%2C48.7z%20M128.1%2C47.9h1.4l-0.7-1.9L128.1%2C47.9z%22/%3E%0A%09%09%3Cpath%20class%3D%22st0%22%20d%3D%22M134.2%2C47.7l-0.3%2C0.4v1.3H133v-4.2h0.9v1.9l1.5-1.9h1.1l-1.7%2C2l1.8%2C2.2h-1.1L134.2%2C47.7z%22/%3E%0A%09%09%3Cpath%20class%3D%22st0%22%20d%3D%22M141.4%2C48.6v0.8h-2.7v-1.5l-0.5%2C0.3v-0.7l0.5-0.3v-2h0.9v1.5l0.5-0.3v0.7l-0.5%2C0.3v1.2H141.4z%22/%3E%0A%09%09%3Cpath%20class%3D%22st0%22%20d%3D%22M146.3%2C48.7h-1.9l-0.3%2C0.7h-1l1.6-4.2h1.1l1.6%2C4.2h-1L146.3%2C48.7z%20M144.6%2C47.9h1.4l-0.7-1.9L144.6%2C47.9z%22/%3E%0A%09%09%3Cpath%20class%3D%22st0%22%20d%3D%22M149.5%2C45.2h1.6c1.3%2C0%2C2.2%2C0.8%2C2.2%2C2.1s-0.9%2C2.1-2.2%2C2.1h-1.6V45.2z%20M151.1%2C48.6c0.8%2C0%2C1.3-0.6%2C1.3-1.3%0A%09%09%09c0-0.7-0.5-1.3-1.3-1.3h-0.8v2.6H151.1z%22/%3E%0A%09%09%3Cpath%20class%3D%22st0%22%20d%3D%22M156.5%2C47.7l-1.6-2.5h1l1%2C1.7l1-1.7h1l-1.6%2C2.5v1.7h-0.9V47.7z%22/%3E%0A%09%09%3Cpath%20class%3D%22st0%22%20d%3D%22M62.8%2C52.7h3v0.8h-2.1v0.9h2v0.8h-2v1h2.1v0.8h-3V52.7z%22/%3E%0A%09%09%3Cpath%20class%3D%22st0%22%20d%3D%22M69.3%2C55.2l-0.3%2C0.4v1.3H68v-4.2h0.9v1.9l1.5-1.9h1.1l-1.7%2C2l1.8%2C2.2h-1.1L69.3%2C55.2z%22/%3E%0A%09%09%3Cpath%20class%3D%22st0%22%20d%3D%22M73.9%2C55.6c0.3%2C0.3%2C0.8%2C0.6%2C1.3%2C0.6c0.5%2C0%2C0.7-0.2%2C0.7-0.5c0-0.3-0.4-0.4-0.8-0.5c-0.7-0.2-1.6-0.3-1.6-1.3%0A%09%09%09c0-0.7%2C0.6-1.3%2C1.6-1.3c0.7%2C0%2C1.2%2C0.2%2C1.6%2C0.6l-0.5%2C0.7c-0.3-0.3-0.8-0.5-1.2-0.5c-0.4%2C0-0.6%2C0.2-0.6%2C0.4c0%2C0.3%2C0.4%2C0.4%2C0.8%2C0.5%0A%09%09%09c0.7%2C0.2%2C1.6%2C0.4%2C1.6%2C1.3c0%2C0.8-0.5%2C1.3-1.7%2C1.3c-0.8%2C0-1.4-0.3-1.8-0.7L73.9%2C55.6z%22/%3E%0A%09%09%3Cpath%20class%3D%22st0%22%20d%3D%22M79%2C52.7h2c0.9%2C0%2C1.4%2C0.6%2C1.4%2C1.3c0%2C0.7-0.5%2C1.3-1.4%2C1.3h-1.1v1.5H79V52.7z%20M80.9%2C53.5h-0.9v1.2h0.9%0A%09%09%09c0.4%2C0%2C0.6-0.2%2C0.6-0.6C81.5%2C53.7%2C81.2%2C53.5%2C80.9%2C53.5z%22/%3E%0A%09%09%3Cpath%20class%3D%22st0%22%20d%3D%22M84.6%2C52.7h0.9v3.4h1.8v0.8h-2.7V52.7z%22/%3E%0A%09%09%3Cpath%20class%3D%22st0%22%20d%3D%22M91.3%2C52.6c1.3%2C0%2C2.2%2C0.9%2C2.2%2C2.2c0%2C1.3-0.9%2C2.2-2.2%2C2.2c-1.3%2C0-2.2-0.9-2.2-2.2C89.1%2C53.5%2C90%2C52.6%2C91.3%2C52.6%0A%09%09%09z%20M91.3%2C53.4c-0.8%2C0-1.3%2C0.6-1.3%2C1.4c0%2C0.8%2C0.5%2C1.4%2C1.3%2C1.4c0.8%2C0%2C1.3-0.6%2C1.3-1.4C92.5%2C54%2C92%2C53.4%2C91.3%2C53.4z%22/%3E%0A%09%09%3Cpath%20class%3D%22st0%22%20d%3D%22M98.2%2C56.2h-1.9L96%2C56.9h-1l1.6-4.2h1.1l1.6%2C4.2h-1L98.2%2C56.2z%20M96.5%2C55.4h1.4l-0.7-1.9L96.5%2C55.4z%22/%3E%0A%09%09%3Cpath%20class%3D%22st0%22%20d%3D%22M102%2C53.5h-1.2v-0.8h3.3v0.8h-1.2v3.4H102V53.5z%22/%3E%0A%09%09%3Cpath%20class%3D%22st0%22%20d%3D%22M108.5%2C56.2h-1.9l-0.3%2C0.7h-1l1.6-4.2h1.1l1.6%2C4.2h-1L108.5%2C56.2z%20M106.9%2C55.4h1.4l-0.7-1.9L106.9%2C55.4z%22/%3E%0A%09%09%3Cpath%20class%3D%22st0%22%20d%3D%22M111.4%2C54.8c0-1.3%2C1-2.2%2C2.2-2.2c1%2C0%2C1.5%2C0.5%2C1.8%2C1l-0.8%2C0.4c-0.2-0.3-0.6-0.6-1-0.6c-0.7%2C0-1.3%2C0.6-1.3%2C1.4%0A%09%09%09c0%2C0.8%2C0.6%2C1.4%2C1.3%2C1.4c0.5%2C0%2C0.8-0.3%2C1-0.6l0.8%2C0.4c-0.3%2C0.5-0.8%2C1-1.8%2C1C112.3%2C57%2C111.4%2C56.1%2C111.4%2C54.8z%22/%3E%0A%09%09%3Cpath%20class%3D%22st0%22%20d%3D%22M117.5%2C55.9c0.2%2C0.2%2C0.4%2C0.3%2C0.7%2C0.3c0.4%2C0%2C0.7-0.3%2C0.7-0.7v-2.8h0.9v2.8c0%2C1-0.6%2C1.4-1.5%2C1.4%0A%09%09%09c-0.4%2C0-0.8-0.1-1.1-0.4L117.5%2C55.9z%22/%3E%0A%09%09%3Cpath%20class%3D%22st0%22%20d%3D%22M122.1%2C52.7h0.9v4.2h-0.9V52.7z%22/%3E%0A%09%09%3Cpath%20class%3D%22st0%22%20d%3D%22M129.9%2C55.2l-0.3%2C0.4v1.3h-0.9v-4.2h0.9v1.9l1.5-1.9h1.1l-1.7%2C2l1.8%2C2.2h-1.1L129.9%2C55.2z%22/%3E%0A%09%09%3Cpath%20class%3D%22st0%22%20d%3D%22M135.9%2C55.4h-0.7v1.5h-0.9v-4.2h2c0.9%2C0%2C1.4%2C0.6%2C1.4%2C1.3c0%2C0.7-0.5%2C1.1-0.9%2C1.2l0.9%2C1.6h-1L135.9%2C55.4z%0A%09%09%09%20M136.1%2C53.5h-0.9v1.2h0.9c0.4%2C0%2C0.6-0.2%2C0.6-0.6S136.5%2C53.5%2C136.1%2C53.5z%22/%3E%0A%09%09%3Cpath%20class%3D%22st0%22%20d%3D%22M140%2C52.7h0.9v2.5c0%2C0.6%2C0.3%2C1%2C1%2C1c0.6%2C0%2C1-0.4%2C1-1v-2.5h0.9v2.5c0%2C1-0.6%2C1.7-1.9%2C1.7c-1.3%2C0-1.9-0.7-1.9-1.7%0A%09%09%09V52.7z%22/%3E%0A%09%09%3Cpath%20class%3D%22st0%22%20d%3D%22M146.3%2C55.6c0.3%2C0.3%2C0.8%2C0.6%2C1.3%2C0.6c0.5%2C0%2C0.7-0.2%2C0.7-0.5c0-0.3-0.4-0.4-0.8-0.5c-0.7-0.2-1.6-0.3-1.6-1.3%0A%09%09%09c0-0.7%2C0.6-1.3%2C1.6-1.3c0.7%2C0%2C1.2%2C0.2%2C1.6%2C0.6l-0.5%2C0.7c-0.3-0.3-0.8-0.5-1.2-0.5c-0.4%2C0-0.6%2C0.2-0.6%2C0.4c0%2C0.3%2C0.4%2C0.4%2C0.8%2C0.5%0A%09%09%09c0.7%2C0.2%2C1.6%2C0.4%2C1.6%2C1.3c0%2C0.8-0.5%2C1.3-1.7%2C1.3c-0.8%2C0-1.4-0.3-1.8-0.7L146.3%2C55.6z%22/%3E%0A%09%09%3Cpath%20class%3D%22st0%22%20d%3D%22M151.4%2C56.2l2-2.7h-2v-0.8h3.1v0.7l-2%2C2.7h2v0.8h-3.2V56.2z%22/%3E%0A%09%09%3Cpath%20class%3D%22st0%22%20d%3D%22M158%2C55.2l-1.6-2.5h1l1%2C1.7l1-1.7h1l-1.6%2C2.5v1.7H158V55.2z%22/%3E%0A%09%09%3Cpath%20class%3D%22st0%22%20d%3D%22M165%2C54l-0.7%2C2.9h-0.9l-1.2-4.2h1l0.7%2C3l0.8-3h0.7l0.8%2C3l0.7-3h1l-1.2%2C4.2h-0.9L165%2C54z%22/%3E%0A%09%09%3Cpath%20class%3D%22st0%22%20d%3D%22M172.3%2C56.2h-1.9l-0.3%2C0.7h-1l1.6-4.2h1.1l1.6%2C4.2h-1L172.3%2C56.2z%20M170.6%2C55.4h1.4l-0.7-1.9L170.6%2C55.4z%22/%3E%0A%09%3C/g%3E%0A%09%3Cpath%20class%3D%22st1%22%20d%3D%22M48.9%2C45.9l0-1.3l4.5-4.5V16.9L30.7%2C3.8v-1l-3.7-2.1l-0.4-0.2l0%2C0l0%2C0l-0.4%2C0.2l-3.7%2C2.1v1L0%2C16.9v23.3%0A%09%09l4.5%2C4.5l0%2C1.3l5-3.5l-4.2-4.2l0-14.9l16.9%2C11.7l-8.9%2C6.2v0L1.7%2C49.4l0%2C0.1l0.9%2C0.9l4.3%2C4.4h10.3l-5.8-5.8l15.3-10.7l0%2C0l0%2C0%0A%09%09L42%2C48.9l-5.8%2C5.8h10.3l4.3-4.4l0.9-0.9l0-0.1L40%2C41.3v0l-8.9-6.2L48%2C23.4l0%2C14.9l-4.2%2C4.2L48.9%2C45.9z%20M25.5%2C31.1l-4.8-3.3l4.8-2.8%0A%09%09V31.1z%20M28.3%2C30.9v-5.7l4.5%2C2.6L28.3%2C30.9z%20M35.5%2C25.9l-5.8-3.4l0-1.1l-0.4-0.2L27%2C19.8l-0.3-0.2l0%2C0l0%2C0l-0.3%2C0.2l-2.3%2C1.3%0A%09%09l-0.4%2C0.2l0%2C1.1l-5.8%2C3.4L7.3%2C18.5l16.2-9.4l2.8%2C1.6l0.4%2C0.2l0%2C0l0%2C0l0.4-0.2l2.8-1.6l16.2%2C9.4L35.5%2C25.9z%22/%3E%0A%09%3Cg%3E%0A%09%09%3Cpath%20d%3D%22M77.4%2C18.6l-6.9%2C8c2.4%2C2.6%2C5.1%2C5.7%2C7.5%2C8.4v0.3H72l-4.8-5.6v5.6h-4.8v-17h4.8v5.6c1.5-1.8%2C3-3.8%2C4.5-5.6h5.7V18.6z%22/%3E%0A%09%09%3Cpath%20d%3D%22M83%2C23.3l0.3%2C1.3c0.6-1.1%2C1.7-1.6%2C2.9-1.6c1.2%2C0%2C2.4%2C0.5%2C3.1%2C1.3l-1.8%2C3.2c-0.7-0.6-1.3-0.7-2-0.7c-1.1%2C0-2.1%2C0.7-2.1%2C2.3%0A%09%09%09v6.2H79v-12H83z%22/%3E%0A%09%09%3Cpath%20d%3D%22M94.7%2C23.3v6.6c0%2C1.5%2C0.8%2C2%2C1.7%2C2c1.1%2C0%2C2.1-0.7%2C2.1-2.2v-6.4h4.4v12h-3.9l-0.2-1.3c-1%2C1.2-2.5%2C1.6-3.8%2C1.6%0A%09%09%09c-2.5%2C0-4.7-1.4-4.7-5.6v-6.6H94.7z%22/%3E%0A%09%09%3Cpath%20d%3D%22M106.1%2C30.7c1.8%2C1.2%2C3.3%2C1.3%2C4.2%2C1.3c0.8%2C0%2C1.2-0.2%2C1.2-0.6s-0.4-0.6-1.3-0.7c-2.3-0.1-5.1-1-5.1-3.9%0A%09%09%09c0-2.9%2C2.7-3.9%2C5.5-3.9c1.9%2C0%2C3.7%2C0.6%2C4.9%2C1.5l-1.9%2C2.7c-0.7-0.4-2-0.8-3-0.7c-0.6%2C0-1.1%2C0.1-1.1%2C0.6c0%2C0.2%2C0.2%2C0.6%2C0.9%2C0.6%0A%09%09%09c2.5%2C0.1%2C5.5%2C0.8%2C5.5%2C3.9c0%2C3-2.7%2C4.1-5.6%2C4.1c-2.1%2C0-4.4-0.6-5.8-1.6L106.1%2C30.7z%22/%3E%0A%09%09%3Cpath%20d%3D%22M127.6%2C23.3v1.5l-4.6%2C6.6h4.8v3.8h-10.7v-1.4l4.8-7h-4.3v-3.5H127.6z%22/%3E%0A%09%09%3Cpath%20d%3D%22M142.8%2C23.3l-7.4%2C17h-4.7l2.4-5.6l-4.7-11.4h4.7l1%2C2.9l1.3%2C4.1l1.5-4.2l1.1-2.8H142.8z%22/%3E%0A%09%09%3Cpath%20d%3D%22M154.1%2C23.3l2.1%2C6.7l0.9-3.4l1.1-3.3h4.7l-4.4%2C12h-4.1l-1.7-4.5l-1.6%2C4.5H147l-4.4-12h4.7l1.1%2C3.3l0.9%2C3.4l2.1-6.7H154.1z%0A%09%09%09%22/%3E%0A%09%09%3Cpath%20d%3D%22M176.9%2C29.3c0%2C4.4-3.5%2C6.2-6.8%2C6.2c-3.4%2C0-6.8-1.9-6.8-6.2c0-4.4%2C3.4-6.3%2C6.8-6.3C173.6%2C23%2C176.9%2C24.9%2C176.9%2C29.3z%0A%09%09%09%20M172.5%2C29.3c0-1.4-0.9-2.6-2.5-2.6c-1.6%2C0-2.5%2C1.2-2.5%2C2.6s0.9%2C2.6%2C2.5%2C2.6C171.6%2C31.9%2C172.5%2C30.7%2C172.5%2C29.3z%22/%3E%0A%09%09%3Cpath%20d%3D%22M195.2%2C23c-1.2-0.9-2.5-1.2-4-1.2c-1.2%2C0-2.3%2C0.4-2.3%2C1.3c0%2C1.2%2C1.1%2C1.3%2C2.8%2C1.5c3.4%2C0.4%2C6.9%2C1.7%2C6.9%2C5.6%0A%09%09%09c0%2C3.9-3.6%2C5.5-7.4%2C5.5c-3.1%2C0-5.2-0.5-7.6-3l2.6-3c1.7%2C1.6%2C3.5%2C1.9%2C5%2C1.9c1.6%2C0%2C2.7-0.6%2C2.7-1.5c0-0.8-1-1.4-2.8-1.6%0A%09%09%09c-3.7-0.3-6.9-1.3-6.9-5.5c0-3.6%2C3.5-5.1%2C7.1-5.1c2.5%2C0%2C4.5%2C0.6%2C6.3%2C2L195.2%2C23z%22/%3E%0A%09%09%3Cpath%20d%3D%22M202.6%2C31c3.2%2C0%2C3.2%2C4.4%2C0%2C4.4C199.4%2C35.4%2C199.4%2C31%2C202.6%2C31z%22/%3E%0A%09%09%3Cpath%20d%3D%22M219.5%2C32.5h-7.6l-1.1%2C2.8h-5.1l7.6-17h4.8l7.6%2C17h-5.1L219.5%2C32.5z%20M215.7%2C23l-2.2%2C5.4h4.3L215.7%2C23z%22/%3E%0A%09%09%3Cpath%20d%3D%22M228.8%2C31c3.2%2C0%2C3.2%2C4.4%2C0%2C4.4C225.6%2C35.4%2C225.5%2C31%2C228.8%2C31z%22/%3E%0A%09%3C/g%3E%0A%09%3Cg%3E%0A%09%09%3Crect%20x%3D%2222.9%22%20y%3D%2249.6%22%20transform%3D%22matrix%280.7071%20-0.7071%200.7071%200.7071%20-28.9443%2032.2325%29%22%20class%3D%22st1%22%20width%3D%223%22%20height%3D%223%22/%3E%0A%09%09%3Crect%20x%3D%2225.1%22%20y%3D%2251.7%22%20transform%3D%22matrix%280.7071%20-0.7071%200.7071%200.7071%20-29.8261%2034.3612%29%22%20class%3D%22st1%22%20width%3D%223%22%20height%3D%223%22/%3E%0A%09%09%3Crect%20x%3D%2227.2%22%20y%3D%2249.6%22%20transform%3D%22matrix%280.7071%20-0.7071%200.7071%200.7071%20-27.7085%2035.2383%29%22%20class%3D%22st1%22%20width%3D%223%22%20height%3D%223%22/%3E%0A%09%09%3Crect%20x%3D%2229.3%22%20y%3D%2247.5%22%20transform%3D%22matrix%280.7071%20-0.7071%200.7071%200.7071%20-25.591%2036.1154%29%22%20class%3D%22st1%22%20width%3D%223%22%20height%3D%223%22/%3E%0A%09%09%3Crect%20x%3D%2227.3%22%20y%3D%2245.6%22%20transform%3D%22matrix%280.7071%20-0.7071%200.7071%200.7071%20-24.7591%2034.1069%29%22%20class%3D%22st1%22%20width%3D%223%22%20height%3D%222.7%22/%3E%0A%09%09%3Cpolygon%20class%3D%22st1%22%20points%3D%2232.9%2C49%2035.1%2C53.2%2030.8%2C51.1%2030.8%2C51.1%2032.9%2C49%20%09%09%22/%3E%0A%09%09%3Crect%20x%3D%2222.9%22%20y%3D%2253.8%22%20transform%3D%22matrix%280.7071%20-0.7071%200.7071%200.7071%20-31.9436%2033.4841%29%22%20class%3D%22st1%22%20width%3D%223%22%20height%3D%223%22/%3E%0A%09%09%3Crect%20x%3D%2222.1%22%20y%3D%2255.4%22%20transform%3D%22matrix%280.7071%20-0.7071%200.7071%200.7071%20-33.5317%2032.8263%29%22%20class%3D%22st1%22%20width%3D%221.5%22%20height%3D%223%22/%3E%0A%09%09%3Crect%20x%3D%2227.2%22%20y%3D%2253.8%22%20transform%3D%22matrix%280.7071%20-0.7071%200.7071%200.7071%20-30.7078%2036.4899%29%22%20class%3D%22st1%22%20width%3D%223%22%20height%3D%223%22/%3E%0A%09%09%3Crect%20x%3D%2228.8%22%20y%3D%2256.2%22%20transform%3D%22matrix%280.7071%20-0.7071%200.7071%200.7071%20-31.3703%2038.0892%29%22%20class%3D%22st1%22%20width%3D%223%22%20height%3D%221.5%22/%3E%0A%09%09%3Crect%20x%3D%2220.8%22%20y%3D%2247.4%22%20transform%3D%22matrix%280.7071%20-0.7071%200.7071%200.7071%20-28.0672%2030.115%29%22%20class%3D%22st1%22%20width%3D%223%22%20height%3D%223%22/%3E%0A%09%09%3Crect%20x%3D%2223%22%20y%3D%2245.4%22%20transform%3D%22matrix%280.7071%20-0.7071%200.7071%200.7071%20-26.0699%2030.9423%29%22%20class%3D%22st1%22%20width%3D%222.7%22%20height%3D%223%22/%3E%0A%09%09%3Crect%20x%3D%2219%22%20y%3D%2249.4%22%20transform%3D%22matrix%280.7071%20-0.7071%200.7071%200.7071%20-30.0646%2029.2877%29%22%20class%3D%22st1%22%20width%3D%222.7%22%20height%3D%223%22/%3E%0A%09%3C/g%3E%0A%3C/g%3E%0A%3C/svg%3E%0A" alt="Kruszywo SA">
+  </div>
+</div>
+
+<div class="wrap">
+  <div class="tiles">
+    
+    <div class="tile" onclick="show('calc')" >🧮 Kalkulator</div>
+    <div class="tile" onclick="show('history')" >📋 Historia wycen</div>
+    <div class="tile" onclick="show('clients')" >👥 Klienci</div>
+    <div class="tile" onclick="show('prices')" >💰 Cennik</div>
+    <div class="tile" onclick="show('offer')" >📄 Oferta</div><div class="tile" onclick="show('stats')" >📊 Statystyki</div><div class="tile" onclick="show('backup')" >💾 Kopia</div>
+  </div>
+
+  <div id="quick" class="card hidden">
+    <h3 class="section-title">Szybka wycena</h3>
+    <div class="grid">
+      <div><label>Kopalnia</label><select id="quickQuarry" onchange="onQuickQuarryChange()"></select></div>
+      <div><label>Towar / frakcja</label><select id="quickProduct" onchange="syncQuickPrice()"></select></div>
+      <div><label>Cena z kopalni</label><input id="quickPrice" type="number"></div>
+      <div><label>Kilometry</label><input id="quickKm" type="number" value="20"></div>
+      
+      <div><label>Ładowność auta</label><input id="quickLoad" type="number" value="25"></div>
+      <div><label>Marża</label><input id="quickMargin" type="number" value="3"></div>
+      <div><label>Ilość ton/sztuk</label><input id="quickQty" type="number" value="25"></div>
+    </div>
+    <div class="actions"><button onclick="calcQuick()">Policz</button></div>
+    <div id="quickResult" class="result-box"></div>
+  </div>
+
+  <div id="calc" class="card hidden">
+    <h3 class="section-title">Kalkulator ceny</h3>
+    <div class="grid">
+      <div><label>Wybierz klienta</label><select id="savedClient" onchange="useClientForCalc()"><option value="">-- wybierz klienta --</option></select></div>
+      <div><label>Kopalnia</label><select id="quarry" onchange="onQuarryChange()"></select></div>
+      <div><label>Towar / frakcja</label><select id="product" onchange="syncPrice()"></select></div>
+      <div><label>Cena na kopalni zł/t</label><input id="price" type="number"></div>
+      
+      
+      
+      
+      <div><label>Ilość ton/sztuk</label><input id="qty" type="number" value="0"></div><div><label>Rabat w kwocie (zł/t)</label><input id="discountValue" type="number" value="0"></div><div><label>Koszt transportu</label><input id="transportCost" type="number" value="0"></div>
+      <div><label>Klient</label><input id="clientName" type="text"></div>
+      <div><label>Telefon</label><input id="clientPhone" type="text"></div>
+      <div><label>Adres dostawy</label><input id="deliveryAddress" type="text" placeholder="Wpisz adres dostawy ręcznie"><div class="notice">To pole możesz zmieniać ręcznie.</div></div>
+    </div>
+    <div class="actions"><button id="quoteBtn" onclick="addQuoteItem()">➕ Dodaj pozycję</button><button onclick="calc()">Policz</button><button class="secondary" onclick="saveQuote()">Zapisz wycenę</button><button class="secondary" onclick="clearQuote()">Nowa wycena / Wyczyść</button></div>
+    <p id="result"></p>
+    
+  </div>
+
+  <div id="history" class="card hidden">
+    <h3 class="section-title">Historia wycen</h3>
+    <div class="grid3">
+      <div><label>Szukaj po kliencie</label><input id="historyClientSearch" type="text" oninput="renderHistory()" placeholder="np. Oświęcim, Amper"></div>
+      <div><label>Filtr kopalni</label><select id="historyQuarryFilter" onchange="renderHistory()"><option value="">Wszystkie kopalnie</option></select></div>
+      <div><label>Sortowanie</label><select id="historySort" onchange="renderHistory()"><option value="newest">Od najnowszych</option><option value="oldest">Od najstarszych</option></select></div>
+    </div>
+    <div id="historyList"></div>
+  </div>
+
+  <div id="clients" class="card hidden">
+    <h3 class="section-title">Dodaj klienta</h3>
+    <input type="hidden" id="editingClientId">
+    <div class="grid">
+      <div><label>Nazwa</label><input id="cname"></div>
+      <div><label>Telefon</label><input id="cphone"></div>
+      <div><label>Miejscowość</label><input id="caddress"></div>
+      <div><label>Segment</label><select id="csegment"><option>A</option><option selected>B</option><option>C</option></select></div>
+      <div><label>Etap</label><select id="cstage"><option>Lead</option><option>Po kontakcie</option><option>Oferta wysłana</option><option>Negocjacje</option><option>Zamówienie</option><option>Utracony</option><option>Stały klient</option></select></div>
+      <div><label>Następny kontakt</label><input id="cnext" type="text"></div>
+    </div>
+    <label>Notatki</label><textarea id="cnotes"></textarea>
+    <div class="actions"><button id="saveClientBtn" onclick="saveClientForm()">Dodaj klienta</button><button class="secondary" onclick="resetClientForm()">Wyczyść formularz</button><button class="secondary" onclick="addTaskPlaceholder()">Dodaj zadanie</button><button class="secondary" onclick="exportClients()">Eksport klientów</button><input type="file" id="importClientsFile" onchange="importClients()"></div>
+  </div>
+
+  <div id="clientsListCard" class="card hidden">
+    <h3 class="section-title">Lista klientów</h3>
+    <div class="grid">
+      <div><label>Szukaj</label><input id="clientSearch" type="text" oninput="renderClients()" placeholder="Szukaj po nazwie, telefonie lub mieście"></div>
+      <div><label>Filtr segment</label><select id="clientSegmentFilter" onchange="renderClients()"><option value="">Wszystkie</option><option value="A">A</option><option value="B">B</option><option value="C">C</option></select></div>
+    </div>
+    <div id="clientsList"></div>
+  </div>
+
+  <div id="prices" class="card hidden">
+    <h3 class="section-title">Cennik kopalni</h3>
+    <div class="grid">
+      <div><label>Kopalnia</label><select id="priceQuarry" onchange="renderPriceEditor()"></select></div>
+      
+    </div>
+    <div class="actions"><button onclick="addQuarry()">Dodaj kopalnię</button><button onclick="deleteQuarry()">Usuń kopalnię</button><button onclick="addFraction()">Dodaj frakcję</button><button onclick="savePrices()">Zapisz ceny</button></div><div id="priceEditor"></div>
+    <div class="actions"><button onclick="savePrices()">Zapisz cennik</button><button class="secondary" onclick="if(confirm('Czy na pewno chcesz usunąć wszystkie własne kopalnie, frakcje i ceny?\n\nTej operacji nie można cofnąć.')) resetPrices()">Reset</button><button class="secondary" onclick="exportPrices()">Eksport cennika</button><input type="file" id="importFile" onchange="importPrices()"></div>
+  </div>
+
+  <div id="offer" class="card hidden">
+    <h3 class="section-title">Oferta</h3>
+    <textarea id="offerBox"></textarea>
+    <div class="actions"><button onclick="copyOffer()">Kopiuj</button><button onclick="printOffer()">📤 Udostępnij</button></div>
+    <label>Uwagi do oferty</label>
+<textarea id="offerNotes">Odbiór loco kopalnia.
+Forma płatności: przelew, gotówka lub przedpłata.
+Oferta ważna 30 dni.
+
+W ofercie zastosowano średni rabat handlowy około 0%.</textarea>
+<p id="offerInfo" class="small"></p>
+  </div>
+
+
+<div id="backup" class="card hidden">
+<h3 class="section-title">Kopia bezpieczeństwa</h3>
+<p>Backup zawiera klientów, cennik, historię wycen i ustawienia programu.</p>
+<div class="actions">
+<button onclick="exportBackup()">📤 Eksport backupu</button>
+<input type="file" id="importBackupFile" onchange="importBackup()">
+</div>
+</div>
+
+<div id="stats" class="card hidden">
+<h3 class="section-title">Statystyki sprzedażowe</h3>
+<div id="statsBox"></div>
+</div>
+
+</div>
+
+<script>
+const defaultData = {
+  "Rajsko": {rate:6.0, products:{"Kruszywo grube 2/8 mm":75,"Kruszywo grube 8/16 mm":75,"Kruszywo grube 2/16 mm":75,"Kruszywo grube 63/200 mm (otoczaki)":77,"Kruszywo drobne 0/0,5 mm gat. II":15,"Kruszywo drobne 0/2 mm":36,"Kruszywo o ciągłym uziarnieniu 0/31,5 mm (surowiec)":54,"Kruszywo o ciągłym uziarnieniu 0/31,5 mm (kruszone)":57}},
+  "Stawy Monowskie": {rate:6.0, products:{"Kruszywo grube 2/16 mm":74,"Kruszywo grube 16/63 mm gat. II":61,"Kruszywo drobne 0/0,5 mm gat. II":15,"Kruszywo drobne 0/2 mm":36,"Kruszywo o ciągłym uziarnieniu 0/31,5 mm (surowiec)":47}},
+  "Dwory": {rate:6.0, products:{"Kruszywo o ciągłym uziarnieniu gat. II":40}},
+  "Kończyce": {rate:6.2, products:{"Kruszywo grube 2/8 mm":75,"Kruszywo grube 8/16 mm":75,"Kruszywo grube 2/16 mm":75,"Kruszywo grube 16/63 mm gat. II":61,"Kruszywo drobne 0/0,5 mm gat. II":16,"Kruszywo drobne 0/2 mm":44,"Kruszywo o ciągłym uziarnieniu 0/31,5 mm (surowiec)":50,"Kruszywo o ciągłym uziarnieniu 0/31,5 mm (kruszone)":60}},
+  "Niepołomice": {rate:5.8, products:{"Kruszywo grube 2/16 mm":74,"Kruszywo grube 16/63 mm gat. II":64,"Kruszywo drobne 0/0,5 mm gat. II":15,"Kruszywo drobne 0/2 mm":34,"Kruszywo o ciągłym uziarnieniu 0/31,5 mm (surowiec)":40,"Kruszywo o ciągłym uziarnieniu gat. II":30}},
+  "Zakole A": {rate:6.1, products:{"Kruszywo grube 2/16 mm":74,"Kruszywo grube 16/63 mm gat. II":61,"Kruszywo drobne 0/0,5 mm gat. II":15,"Kruszywo drobne 0/2 mm":35,"Kruszywo o ciągłym uziarnieniu 0/31,5 mm (surowiec)":47}},
+  "Zakole B": {rate:6.1, products:{"Kruszywo grube 2/8 mm":74,"Kruszywo grube 8/16 mm":74,"Kruszywo drobne 0/2 mm":35,"Kruszywo o ciągłym uziarnieniu 0/45 mm (surowiec)":47}},
+  "Zator – Podolsze Nowe": {rate:6.0, products:{"Kruszywo grube 2/8 mm":74,"Kruszywo grube 8/16 mm":74,"Kruszywo grube 16/63 mm gat. II":61,"Kruszywo drobne 0/2 mm":36,"Ziemia nadkładowa gat. I":25}}
+};
+
+const SHEET_URL="https://script.google.com/macros/s/AKfycbwkPrNYBwPZn_sgCTAEGv3a25nTcd5jC6YdTQfX1Kl5i_1tPAUDZrzKAZXXpCdaHYzs/exec";
+
+async function loadPricesFromSheet(){
+ try{
+  const res = await fetch(SHEET_URL + "?t=" + Date.now(), {
+  cache: "no-store"
+});
+  const sheetData = await res.json();
+
+  if(Object.keys(sheetData).length){
+     priceData=sheetData;
+     fillSelectors();
+     if(typeof renderPriceEditor==="function") renderPriceEditor();
+     if(typeof syncPrice==="function") syncPrice();
+     if(typeof syncQuickPrice==="function") syncQuickPrice();
+     console.log("Załadowano cennik z Google Sheets");
+  }
+
+ }catch(err){
+   console.error("Błąd pobierania cennika:",err);
+ }
+}
+
+let clients = JSON.parse(localStorage.getItem("clients_v21b") || "null") || [{id:Date.now()+1,name:"Amper",phone:"45262737373",address:"Oświęcim",segment:"B",stage:"Stały klient",nextContact:"",notes:""}];
+let priceData = JSON.parse(localStorage.getItem("priceData_v21b") || "null") || defaultData;
+if(!priceData || typeof priceData!=="object" || !Object.keys(priceData).length){ priceData=defaultData; }
+let quotes = JSON.parse(localStorage.getItem("quotes_v21b") || "[]");
+function persistClients(){ localStorage.setItem("clients_v21b", JSON.stringify(clients)); }
+function persistPrices(){ localStorage.setItem("priceData_v21b", JSON.stringify(priceData)); }
+function persistQuotes(){ localStorage.setItem("quotes_v21b", JSON.stringify(quotes)); }
+function show(id){ document.querySelectorAll(".card").forEach(c=>c.classList.add("hidden")); if(id==="clients"){ document.getElementById("clients").classList.remove("hidden"); document.getElementById("clientsListCard").classList.remove("hidden"); } else { document.getElementById(id).classList.remove("hidden"); } if(id==="history") renderHistory(); if(id==="prices") renderPriceEditor(); if(id==="clients") renderClients(); if(id==="stats") renderStats(); }
+function fillSelectors(){ quarry.innerHTML=""; quickQuarry.innerHTML=""; priceQuarry.innerHTML=""; historyQuarryFilter.innerHTML='<option value="">Wszystkie kopalnie</option>'; Object.keys(priceData).forEach(q=>{ quarry.innerHTML += `<option value="${q}">${q}</option>`; quickQuarry.innerHTML += `<option value="${q}">${q}</option>`; priceQuarry.innerHTML += `<option value="${q}">${q}</option>`; historyQuarryFilter.innerHTML += `<option value="${q}">${q}</option>`; }); renderProducts(true); renderQuickProducts(true); renderClientChoices(); }
+function renderProducts(forceFirst=false){
+ const q=quarry.value||Object.keys(priceData)[0];
+ if(!q || !priceData[q] || !priceData[q].products){ product.innerHTML=""; return; }
+ const current=product.value, items=Object.keys(priceData[q].products); product.innerHTML=""; items.forEach(x=>product.innerHTML += `<option value="${x}">${x}</option>`); if(!items.length) return; if(!forceFirst&&items.includes(current)) product.value=current; else product.selectedIndex=0; }
+function renderQuickProducts(forceFirst=false){
+ const q=quickQuarry.value||Object.keys(priceData)[0];
+ if(!q || !priceData[q] || !priceData[q].products){ quickProduct.innerHTML=""; return; }
+ const current=quickProduct.value, items=Object.keys(priceData[q].products); quickProduct.innerHTML=""; items.forEach(x=>quickProduct.innerHTML += `<option value="${x}">${x}</option>`); if(!items.length) return; if(!forceFirst&&items.includes(current)) quickProduct.value=current; else quickProduct.selectedIndex=0; }
+function renderClientChoices(){ const current=savedClient.value; savedClient.innerHTML='<option value="">-- wybierz klienta --</option>'; [...clients].sort((a,b)=>(a.name||"").localeCompare((b.name||""),"pl")).forEach(c=>savedClient.innerHTML += `<option value="${c.id}">${c.name} | ${c.address||""} | ${c.phone||""}</option>`); if([...savedClient.options].some(o=>o.value===current)) savedClient.value=current; }
+function useClientForCalc(){ const id=Number(savedClient.value); if(!id) return; const c=clients.find(x=>x.id===id); if(!c) return; clientName.value=c.name||""; clientPhone.value=c.phone||""; deliveryAddress.value=c.address||""; }
+function onQuarryChange(){ renderProducts(true); syncPrice(); }
+function onQuickQuarryChange(){ renderQuickProducts(true); syncQuickPrice(); }
+function syncPrice(){ const q=quarry.value,p=product.value; if(priceData[q]&&priceData[q].products[p]!==undefined){ price.value=priceData[q].products[p];  } }
+function syncQuickPrice(){ const q=quickQuarry.value,p=quickProduct.value; if(priceData[q]&&priceData[q].products[p]!==undefined){ quickPrice.value=priceData[q].products[p]; } }
+
+let quoteItems=[];
+let editIndex=-1;
+function renderQuoteItems(){
+ let box=document.getElementById('quoteItemsBox');
+ if(!box){
+   box=document.createElement('div');
+   box.id='quoteItemsBox';
+   const res=document.getElementById('result');
+   res.parentNode.insertBefore(box,res);
+ }
+ box.innerHTML='<h4>Pozycje wyceny</h4>'+quoteItems.map((x,i)=>
+ '<div class="quote-item-card" onclick="selectQuoteItem('+i+')" style="cursor:pointer;"><div class="quote-item-title">'+x.quarry+'</div><div>'+x.product+'</div><div><b>'+x.qty+'</b> t/szt</div><div><b>'+x.value.toFixed(2)+' zł</b></div><div style="margin-top:8px"><button onclick="editQuoteItem('+i+')">✏️ Edytuj</button> <button onclick="deleteQuoteItem('+i+')">🗑 Usuń</button></div></div>'
+ ).join('');
+}
+function addQuoteItem(){
+const btn=document.getElementById('quoteBtn');
+
+ const item={quarry:(quarry.value||""),product:(product.value||""),price:Number(price.value||0),qty:Number(qty.value||0),discount:Number((window.discountValue&&discountValue.value)||0)};
+ item.value=(item.price-item.discount)*item.qty;
+ if(editIndex>=0){quoteItems[editIndex]=item; editIndex=-1; const btn=document.getElementById('quoteBtn'); if(btn) btn.textContent='➕ Dodaj pozycję';} else {quoteItems.push(item);}
+ renderQuoteItems(); calc(); updateAverageDiscount();
+ qty.value='0';
+ if(window.discountValue) discountValue.value='0';
+}
+function editQuoteItem(i){
+ const x=quoteItems[i];
+ quarry.value=x.quarry;
+ onQuarryChange&&onQuarryChange();
+ product.value=x.product;
+ syncPrice&&syncPrice();
+ price.value=x.price;
+ qty.value=x.qty;
+ if(window.discountValue) discountValue.value=x.discount;
+ editIndex=i;
+const btn=document.getElementById('quoteBtn');
+if(btn) btn.textContent='💾 Aktualizuj pozycję';
+}
+function deleteQuoteItem(i){ quoteItems.splice(i,1); renderQuoteItems(); calc(); updateAverageDiscount(); }
+
+
+function updateAverageDiscount(){
+ let base=0, disc=0;
+ quoteItems.forEach(x=>{
+   base += Number(x.price||0)*Number(x.qty||0);
+   disc += Number(x.discount||0)*Number(x.qty||0);
+ });
+ const avg = base>0 ? (disc/base*100).toFixed(2) : '0.00';
+ const notes=document.getElementById('offerNotes');
+ if(notes){
+   notes.value = notes.value.replace(/średni rabat handlowy około\s+[0-9]+(?:[\.,][0-9]+)?%/i,
+   'średni rabat handlowy około '+avg+'%');
+ }
+}
+
+function calcCore(priceVal,kmVal,rateVal,loadVal,marginVal,qtyVal){ const course=kmVal*rateVal*2,transport=course/Math.max(loadVal,1),final=priceVal+transport+marginVal,value=final*qtyVal; return {course,transport,final,value}; }
+function calcQuick(){ const p=Number(quickPrice.value||0),k=Number(quickKm.value||0),r=Number((priceData[quickQuarry.value]||{}).rate||0),l=Number(quickLoad.value||1),m=Number(quickMargin.value||0),q=Number(quickQty.value||0); const res=calcCore(p,k,r,l,m,q); quickResult.innerHTML=`Cena końcowa: ${res.final.toFixed(2)} zł/t<br>Wartość zamówienia: ${res.value.toFixed(2)} zł`; }
+function calc(){ if(typeof updateOfferNotesByTransport==='function') updateOfferNotesByTransport();
+ const tc=Number(document.getElementById('transportCost')?.value||0);
+ let total=0;
+ const today=new Date().toLocaleDateString('pl-PL');
+
+ let offer='OFERTA SPRZEDAŻY KRUSZYW\n\n';
+ offer+='Data przygotowania: '+today+'\n\n';
+ offer+='Klient: '+(clientName.value||'')+'\n';
+ if(clientPhone.value) offer+='Telefon: '+clientPhone.value+'\n';
+ if(deliveryAddress.value) offer+='Adres: '+deliveryAddress.value+'\n';
+
+ offer+='\nPOZYCJE OFERTY\n\n';
+
+ quoteItems.forEach((x,i)=>{
+   total += x.value||0;
+   offer+=(i+1)+'. '+x.quarry+' | '+x.product+' | '+x.qty+' t/szt | '+(x.price-(x.discount||0))+' zł/t\n';
+ });
+
+ const netto=total+tc;
+ const vat=netto*0.23;
+ const brutto=netto+vat;
+
+ offer+='\nWartość kruszywa: '+total.toFixed(2)+' zł\n';
+ offer+='Transport: '+tc.toFixed(2)+' zł\n';
+ offer+='Razem netto: '+netto.toFixed(2)+' zł\n';
+ offer+='VAT 23%: '+vat.toFixed(2)+' zł\n';
+ offer+='Razem brutto: '+brutto.toFixed(2)+' zł\n\n';
+
+ offer+='Mirosław Górka\n';
+ offer+='Specjalista ds. Handlu, Marketingu i Rozwoju\n';
+ offer+='Kruszywo S.A.\n';
+ offer+='tel. 511 887 792';
+
+ result.innerHTML='Wartość kruszywa: '+total.toFixed(2)+' zł<br>Koszt transportu: '+tc.toFixed(2)+' zł<br>Łączna wartość netto: '+netto.toFixed(2)+' zł<br>Łączna wartość brutto: '+brutto.toFixed(2)+' zł';
+
+ offerBox.value=offer;
+ return {final:netto,value:total,offer:offer};
+}
+function saveQuote(){ const res=calc(); quotes.unshift({id:Date.now(),date:new Date().toLocaleString("pl-PL"),timestamp:Date.now(),quarry:quarry.value,product:product.value,final:res.final,value:res.value,client:clientName.value||"",phone:clientPhone.value||"",address:"",qty:(typeof qty!=="undefined"?Number(qty.value||0):0),transportCost:(typeof transportCost!=="undefined"?Number(transportCost.value||0):0),offer:res.offer, items: JSON.parse(JSON.stringify(quoteItems)), discountValue:(typeof discountValue!=='undefined'?Number(discountValue.value||0):0)}); persistQuotes(); renderHistory(); }
+function renderHistory(){
+ const txt=(historyClientSearch.value||"").toLowerCase().trim();
+ const qf=historyQuarryFilter.value||"";
+ const sm=historySort.value||"newest";
+
+ let arr=[...(quotes||[])];
+
+ if(txt){
+   arr=arr.filter(x=>{
+     const data=`${x.client||""} ${x.phone||""} ${x.address||""}`.toLowerCase();
+     return data.includes(txt);
+   });
+ }
+
+ if(qf){
+   arr=arr.filter(x=>{
+      if(x.quarry===qf) return true;
+      if(Array.isArray(x.items)){
+         return x.items.some(i=>i.quarry===qf);
+      }
+      return false;
+   });
+ }
+
+ arr.sort((a,b)=>sm==="oldest" ? (a.timestamp||0)-(b.timestamp||0) : (b.timestamp||0)-(a.timestamp||0));
+
+ historyList.innerHTML="";
+ if(!arr.length){
+   historyList.innerHTML='<div class="small">Brak wycen dla podanych filtrów.</div>';
+   return;
+ }
+
+ arr.forEach(item=>{
+   const idx=quotes.findIndex(x=>x.id===item.id);
+   const div=document.createElement("div");
+   div.className="quote";
+
+   const positions=Array.isArray(item.items) && item.items.length
+      ? item.items.map(p=>`${p.quarry||""} | ${p.product||""} | ${p.qty||0}`).join("<br>")
+      : `${item.quarry||""} | ${item.product||""}`;
+
+   div.innerHTML=`<b>${item.date||""}</b><br>
+   <span class="small">${positions}</span><br>
+   <span class="small">${item.client||""} | ${item.phone||""} | ${item.address||""}</span>
+   <div class="client-actions">
+   <button class="secondary" onclick="loadQuote(${idx})">Wczytaj</button>
+   <button class="secondary" onclick="deleteQuote(${idx})">Usuń</button>
+   </div>`;
+
+   historyList.appendChild(div);
+ });
+}
+function loadQuote(i){ const q=quotes[i]; if(!q) return;
+if(Array.isArray(q.items) && q.items.length){
+ quoteItems=JSON.parse(JSON.stringify(q.items));
+ renderQuoteItems();
+ const first=q.items[0];
+ if(first){
+   quarry.value=first.quarry||'';
+   renderProducts(true);
+   product.value=first.product||'';
+   price.value=first.price||0;
+   qty.value=first.qty||0;
+   if(window.discountValue) discountValue.value=first.discount||0;
+ }
+} quarry.value=q.quarry; renderProducts(true); if([...product.options].some(o=>o.value===q.product)) product.value=q.product; syncPrice(); if(typeof qty!=='undefined' && q.qty!=null) qty.value=q.qty; if(typeof transportCost!=='undefined' && q.transportCost!=null) transportCost.value=q.transportCost; clientName.value=q.client||""; clientPhone.value=q.phone||""; try{ const da=document.getElementById("deliveryAddress"); if(da) da.value=q.address||""; }catch(e){}; try{ if(typeof clientSelect!=="undefined") clientSelect.selectedIndex=0; const cs=document.getElementById("clientSelect"); if(cs) cs.selectedIndex=0; }catch(e){}; result.innerHTML=`Cena końcowa: ${q.final.toFixed(2)} zł/t<br>Wartość zamówienia: ${q.value.toFixed(2)} zł`; offerBox.value=q.offer||""; if(typeof calc==="function") calc(); show('calc'); }
+function deleteQuote(i){ quotes.splice(i,1); persistQuotes(); renderHistory(); }
+function clearQuote(){ try{const q=document.getElementById('qty'); if(q) q.value='0'; const t=document.getElementById('transportCost'); if(t) t.value='';}catch(e){}  try{ quoteItems=[]; const box=document.getElementById('quoteItemsBox'); if(box) box.innerHTML=''; }catch(e){}  savedClient.value=""; quarry.selectedIndex=0; renderProducts(true); syncPrice(); qty.value=0; clientName.value=""; clientPhone.value=""; try{ const da=document.getElementById("deliveryAddress"); if(da) da.value=""; }catch(e){};  result.innerHTML=""; offerBox.value=""; offerInfo.textContent=""; }
+function saveClientForm(){ const editingId=editingClientId.value?Number(editingClientId.value):null; const data={id:editingId||Date.now(),name:cname.value.trim(),phone:cphone.value.trim(),address:caddress.value.trim(),segment:csegment.value,stage:cstage.value,nextContact:cnext.value.trim(),notes:cnotes.value.trim()}; if(!data.name) return; if(editingId){ const idx=clients.findIndex(c=>c.id===editingId); if(idx!==-1) clients[idx]=data; } else clients.unshift(data); persistClients(); resetClientForm(); renderClients(); renderClientChoices(); }
+function resetClientForm(){ editingClientId.value=""; cname.value=""; cphone.value=""; caddress.value=""; cnotes.value=""; cnext.value=""; csegment.value="B"; cstage.value="Nowy lead"; saveClientBtn.textContent="Dodaj klienta"; }
+function editClient(i){ const c=clients[i]; if(!c) return; editingClientId.value=c.id; cname.value=c.name||""; cphone.value=c.phone||""; caddress.value=c.address||""; csegment.value=c.segment||"B"; cstage.value=c.stage||"Nowy lead"; cnext.value=c.nextContact||""; cnotes.value=c.notes||""; saveClientBtn.textContent="Zapisz zmiany"; show('clients'); }
+function renderClients(){ const search=(clientSearch.value||"").toLowerCase().trim(), seg=clientSegmentFilter.value||""; let arr=clients.filter(c=>{ const hay=`${c.name} ${c.phone} ${c.address}`.toLowerCase(); return (!search||hay.includes(search))&&(!seg||c.segment===seg); }).sort((a,b)=>(a.name||"").localeCompare((b.name||""),"pl")); clientsList.innerHTML=arr.length?"":'<div class="small">Brak klientów.</div>'; arr.forEach(c=>{ const idx=clients.findIndex(x=>x.id===c.id); const div=document.createElement("div"); div.className="client-row"; div.innerHTML=`<div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap"><div style="font-size:26px;font-weight:800">${c.name}</div><span class="badge">${c.segment}</span></div><div class="small" style="font-size:18px;margin-top:4px">${c.phone||"-"} | ${c.address||"-"}</div><div class="small" style="font-size:18px">Etap: ${c.stage||"-"} | Następny kontakt: ${c.nextContact||"-"}</div><div class="client-actions"><button class="secondary" onclick="advanceClient(${idx})">Następny etap</button><button class="secondary" onclick="useClientDirect(${idx})">Do kalkulatora</button><button class="secondary" onclick="editClient(${idx})">Edytuj</button><button class="secondary" onclick="deleteClient(${idx})">Usuń</button></div>`; clientsList.appendChild(div); }); }
+function advanceClient(i){ const stages=["Nowy lead","Po kontakcie","Oferta wysłana","Stały klient"], c=clients[i], idx=stages.indexOf(c.stage||"Nowy lead"); c.stage=stages[Math.min(idx+1, stages.length-1)]; persistClients(); renderClients(); }
+function useClientDirect(i){ const c=clients[i]; if(!c) return; clientName.value=c.name||""; clientPhone.value=c.phone||""; deliveryAddress.value=c.address||""; savedClient.value=String(c.id); if(typeof calc==="function") calc(); show('calc'); }
+function deleteClient(i){ clients.splice(i,1); persistClients(); renderClients(); renderClientChoices(); }
+function addTaskPlaceholder(){ alert("Przycisk zostawiony pod przyszły moduł zadań."); }
+function renderPriceEditor(){ const q=priceQuarry.value; if(!q) return; let html='<div class="grid4">'; Object.keys(priceData[q].products).forEach(name=>{ const id='pp_'+btoa(unescape(encodeURIComponent(name))).replace(/=/g,''); html += `<div><label>${name}</label><input id="${id}" type="number" value="${priceData[q].products[name]}"></div>`; }); html += '</div>'; priceEditor.innerHTML=html; window._fieldMap={}; Object.keys(priceData[q].products).forEach(name=>window._fieldMap[name]='pp_'+btoa(unescape(encodeURIComponent(name))).replace(/=/g,'')); }
+function savePrices(){ const q=priceQuarry.value; if(!q) return; Object.keys(priceData[q].products).forEach(name=>priceData[q].products[name]=Number(document.getElementById(window._fieldMap[name]).value||0)); persistPrices(); syncPrice(); syncQuickPrice(); alert("Cennik zapisany"); }
+function resetPrices(){ priceData=JSON.parse(JSON.stringify(defaultData)); persistPrices(); fillSelectors(); renderPriceEditor(); syncPrice(); syncQuickPrice(); alert("Przywrócono domyślny cennik"); }
+function exportPrices(){
+ const rows=[['Kopalnia','Produkt','Cena netto','Transport']];
+ Object.keys(priceData).forEach(q=>{
+   Object.keys(priceData[q].products||{}).forEach(p=>{
+     rows.push([q,p,priceData[q].products[p],priceData[q].rate||'']);
+   });
+ });
+ const csv=rows.map(r=>r.map(v=>'"'+String(v).replace(/"/g,'""')+'"').join(';')).join('\n');
+ const blob=new Blob(['\uFEFF'+csv],{type:'text/csv;charset=utf-8;'});
+ const a=document.createElement('a');
+ a.href=URL.createObjectURL(blob);
+ a.download='Cennik_Kruszywo.csv';
+ a.click();
+}
+function importPrices(){
+ const file=importFile.files[0];
+ if(!file) return;
+ const reader=new FileReader();
+ reader.onload=e=>{
+  try{
+   const text=e.target.result.replace(/^\uFEFF/,'');
+   const lines=text.split(/\r?\n/).filter(x=>x.trim());
+   const data={};
+
+   for(let i=1;i<lines.length;i++){
+    const cols=lines[i].split(';').map(x=>x.replace(/^"|"$/g,'').trim());
+    if(cols.length<3) continue;
+
+    const quarry=cols[0];
+    const product=cols[1];
+    const price=parseFloat((cols[2]||'0').replace(',','.'))||0;
+    const rate=parseFloat((cols[3]||'0').replace(',','.'))||0;
+
+    if(!data[quarry]) data[quarry]={rate:rate,products:{}};
+    if(cols.length>=4) data[quarry].rate=rate;
+    data[quarry].products[product]=price;
+   }
+
+   if(!Object.keys(data).length) throw new Error('nodata');
+
+   priceData=data;
+   persistPrices();
+   fillSelectors();
+   renderPriceEditor();
+   syncPrice();
+   syncQuickPrice();
+   alert('Cennik wczytany');
+  }catch(err){
+   console.error(err);
+   alert('Nie udało się wczytać pliku cennika');
+  }
+ };
+ reader.readAsText(file,'utf-8');
+}
+function copyOffer(){ navigator.clipboard.writeText(offerBox.value||""); }
+
+
+function printOffer(){
+  const notes=(document.getElementById('offerNotes')||{}).value||'';
+  const tc=Number(document.getElementById('transportCost')?.value||0);
+  let total=0, rows=''; let baseTotal=0, discountTotal=0;
+
+  quoteItems.forEach((x,i)=>{
+    total+=Number(x.value||0);
+    const rabat=Number(x.discount||0);
+    const cenaPoRabacie=Number(x.price)-rabat; baseTotal += Number(x.price||0)*Number(x.qty||0); discountTotal += rabat*Number(x.qty||0);
+    rows+=`<tr><td>${i+1}</td><td>${x.quarry}</td><td>${x.product}</td><td>${x.qty}</td><td>${cenaPoRabacie.toFixed(2)} zł</td><td>${Number(x.value).toFixed(2)} zł</td></tr>`;
+  });
+
+  if(tc>0){
+    rows+=`<tr><td>${quoteItems.length+1}</td><td>Transport</td><td>Usługa transportowa</td><td>1</td><td>${tc.toFixed(2)} zł</td><td>${tc.toFixed(2)} zł</td></tr>`;
+  }
+
+  let bazowa=0;
+quoteItems.forEach(x=>{bazowa+=Number(x.price||0)*Number(x.qty||0);});
+const srRabat=bazowa>0?Math.round(((bazowa-total)/bazowa)*100):0;
+const notesFinal=notes.replace(/W ofercie zastosowano średni rabat handlowy.*$/m,'').trim()
++'\n\nW ofercie zastosowano średni rabat handlowy około '+srRabat+'%.';
+const netto=total+tc, vat=netto*0.23, brutto=netto+vat;
+
+  const w=window.open('','_blank');
+  w.document.write(`
+  <div class="no-print" style="margin:10px 0;">
+    <button onclick="window.close()" style="padding:10px 16px;border:none;border-radius:8px;background:#0aa84f;color:#fff;font-weight:bold;cursor:pointer;">
+      ← Powrót do kalkulatora
+    </button>
+  </div>
+  <html><head><meta charset="utf-8">
+  <title>${(() => {
+const klient=(document.getElementById('clientName')?.value||'Klient')
+.replace(/[<>:"/\\|?*]+/g,'').trim().replace(/\s+/g,'_');
+const d=new Date().toISOString().split('T')[0];
+return 'Oferta_'+klient+'_'+d;
+})()}</title>
+  <style>
+  @page{size:A4 portrait;margin:8mm;} body{font-family:Arial,sans-serif;margin:10px;color:#222;font-size:12px}
+  .head{display:flex;justify-content:space-between;align-items:center;border-bottom:3px solid #0aa84f;padding-bottom:12px}
+  .logo img{height:50px}
+  table{width:100%;border-collapse:collapse;margin-top:20px}
+  th,td{border:1px solid #d0d5dd;padding:5px}
+  th{background:#f3f4f6}
+  .summary{width:280px;margin-left:auto;margin-top:20px;border:2px solid #0aa84f;border-radius:10px;padding:12px}
+  .summary h3{margin:0 0 10px 0}
+  .row{display:flex;justify-content:space-between;padding:4px 0}
+  .gross{font-size:18px;font-weight:bold;border-top:2px solid #ccc;margin-top:8px;padding-top:8px}
+  .notes{margin-top:20px;border:1px solid #ccc;padding:10px;border-radius:8px;white-space:pre-wrap}@media print{.no-print{display:none!important;}}
+  </style></head><body>
+
+  <div class="head">
+    <div class="logo"><img src="data:image/svg+xml;utf8,%3C%3Fxml%20version%3D%221.0%22%20encoding%3D%22utf-8%22%3F%3E%0A%3C%21--%20Generator%3A%20Adobe%20Illustrator%2023.0.2%2C%20SVG%20Export%20Plug-In%20.%20SVG%20Version%3A%206.00%20Build%200%29%20%20--%3E%0A%3Csvg%20version%3D%221.1%22%20id%3D%22Layer_1%22%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20xmlns%3Axlink%3D%22http%3A//www.w3.org/1999/xlink%22%20x%3D%220px%22%20y%3D%220px%22%0A%09%20width%3D%22254px%22%20height%3D%2259px%22%20viewBox%3D%220%200%20254%2059%22%20style%3D%22enable-background%3Anew%200%200%20254%2059%3B%22%20xml%3Aspace%3D%22preserve%22%3E%0A%3Cstyle%20type%3D%22text/css%22%3E%0A%09.st0%7Bfill%3A%23808285%3B%7D%0A%09.st1%7Bfill%3A%2300A651%3B%7D%0A%3C/style%3E%0A%3Cg%3E%0A%09%3Cg%3E%0A%09%09%3Cpath%20class%3D%22st0%22%20d%3D%22M64%2C47.7l-0.3%2C0.4v1.3h-0.9v-4.2h0.9v1.9l1.5-1.9h1.1l-1.7%2C2l1.8%2C2.2h-1.1L64%2C47.7z%22/%3E%0A%09%09%3Cpath%20class%3D%22st0%22%20d%3D%22M69.9%2C47.9h-0.7v1.5h-0.9v-4.2h2c0.9%2C0%2C1.4%2C0.6%2C1.4%2C1.3c0%2C0.7-0.5%2C1.1-0.9%2C1.2l0.9%2C1.6h-1L69.9%2C47.9z%0A%09%09%09%20M70.2%2C46h-0.9v1.2h0.9c0.4%2C0%2C0.6-0.2%2C0.6-0.6C70.8%2C46.2%2C70.6%2C46%2C70.2%2C46z%22/%3E%0A%09%09%3Cpath%20class%3D%22st0%22%20d%3D%22M76.7%2C48.7h-1.9l-0.3%2C0.7h-1l1.6-4.2h1.1l1.6%2C4.2h-1L76.7%2C48.7z%20M75.1%2C47.9h1.4L75.8%2C46L75.1%2C47.9z%22/%3E%0A%09%09%3Cpath%20class%3D%22st0%22%20d%3D%22M81.1%2C47.7l-0.3%2C0.4v1.3h-0.9v-4.2h0.9v1.9l1.5-1.9h1.1l-1.7%2C2l1.8%2C2.2h-1.1L81.1%2C47.7z%22/%3E%0A%09%09%3Cpath%20class%3D%22st0%22%20d%3D%22M87.3%2C45.1c1.3%2C0%2C2.2%2C0.9%2C2.2%2C2.2s-0.9%2C2.2-2.2%2C2.2c-1.3%2C0-2.2-0.9-2.2-2.2S86%2C45.1%2C87.3%2C45.1z%20M87.3%2C45.9%0A%09%09%09c-0.8%2C0-1.3%2C0.6-1.3%2C1.4c0%2C0.8%2C0.5%2C1.4%2C1.3%2C1.4c0.8%2C0%2C1.3-0.6%2C1.3-1.4C88.5%2C46.5%2C88%2C45.9%2C87.3%2C45.9z%22/%3E%0A%09%09%3Cpath%20class%3D%22st0%22%20d%3D%22M94%2C46.5l-0.7%2C2.9h-0.9l-1.2-4.2h1l0.7%2C3l0.8-3h0.7l0.8%2C3l0.7-3h1l-1.2%2C4.2h-0.9L94%2C46.5z%22/%3E%0A%09%09%3Cpath%20class%3D%22st0%22%20d%3D%22M99.1%2C48.1c0.3%2C0.3%2C0.8%2C0.6%2C1.3%2C0.6c0.5%2C0%2C0.7-0.2%2C0.7-0.5c0-0.3-0.4-0.4-0.8-0.5c-0.7-0.2-1.6-0.3-1.6-1.3%0A%09%09%09c0-0.7%2C0.6-1.3%2C1.6-1.3c0.7%2C0%2C1.2%2C0.2%2C1.6%2C0.6l-0.5%2C0.7c-0.3-0.3-0.8-0.5-1.2-0.5c-0.4%2C0-0.6%2C0.2-0.6%2C0.4c0%2C0.3%2C0.4%2C0.4%2C0.8%2C0.5%0A%09%09%09c0.7%2C0.2%2C1.6%2C0.4%2C1.6%2C1.3c0%2C0.8-0.5%2C1.3-1.7%2C1.3c-0.8%2C0-1.4-0.3-1.8-0.7L99.1%2C48.1z%22/%3E%0A%09%09%3Cpath%20class%3D%22st0%22%20d%3D%22M105.5%2C47.7l-0.3%2C0.4v1.3h-0.9v-4.2h0.9v1.9l1.5-1.9h1.1l-1.7%2C2l1.8%2C2.2h-1.1L105.5%2C47.7z%22/%3E%0A%09%09%3Cpath%20class%3D%22st0%22%20d%3D%22M109.9%2C45.2h0.9v4.2h-0.9V45.2z%22/%3E%0A%09%09%3Cpath%20class%3D%22st0%22%20d%3D%22M113.3%2C45.2h3V46h-2.1v0.9h2v0.8h-2v1h2.1v0.8h-3V45.2z%22/%3E%0A%09%09%3Cpath%20class%3D%22st0%22%20d%3D%22M121.6%2C48.7l2-2.7h-2v-0.8h3.1v0.7l-2%2C2.7h2v0.8h-3.2V48.7z%22/%3E%0A%09%09%3Cpath%20class%3D%22st0%22%20d%3D%22M129.8%2C48.7h-1.9l-0.3%2C0.7h-1l1.6-4.2h1.1l1.6%2C4.2h-1L129.8%2C48.7z%20M128.1%2C47.9h1.4l-0.7-1.9L128.1%2C47.9z%22/%3E%0A%09%09%3Cpath%20class%3D%22st0%22%20d%3D%22M134.2%2C47.7l-0.3%2C0.4v1.3H133v-4.2h0.9v1.9l1.5-1.9h1.1l-1.7%2C2l1.8%2C2.2h-1.1L134.2%2C47.7z%22/%3E%0A%09%09%3Cpath%20class%3D%22st0%22%20d%3D%22M141.4%2C48.6v0.8h-2.7v-1.5l-0.5%2C0.3v-0.7l0.5-0.3v-2h0.9v1.5l0.5-0.3v0.7l-0.5%2C0.3v1.2H141.4z%22/%3E%0A%09%09%3Cpath%20class%3D%22st0%22%20d%3D%22M146.3%2C48.7h-1.9l-0.3%2C0.7h-1l1.6-4.2h1.1l1.6%2C4.2h-1L146.3%2C48.7z%20M144.6%2C47.9h1.4l-0.7-1.9L144.6%2C47.9z%22/%3E%0A%09%09%3Cpath%20class%3D%22st0%22%20d%3D%22M149.5%2C45.2h1.6c1.3%2C0%2C2.2%2C0.8%2C2.2%2C2.1s-0.9%2C2.1-2.2%2C2.1h-1.6V45.2z%20M151.1%2C48.6c0.8%2C0%2C1.3-0.6%2C1.3-1.3%0A%09%09%09c0-0.7-0.5-1.3-1.3-1.3h-0.8v2.6H151.1z%22/%3E%0A%09%09%3Cpath%20class%3D%22st0%22%20d%3D%22M156.5%2C47.7l-1.6-2.5h1l1%2C1.7l1-1.7h1l-1.6%2C2.5v1.7h-0.9V47.7z%22/%3E%0A%09%09%3Cpath%20class%3D%22st0%22%20d%3D%22M62.8%2C52.7h3v0.8h-2.1v0.9h2v0.8h-2v1h2.1v0.8h-3V52.7z%22/%3E%0A%09%09%3Cpath%20class%3D%22st0%22%20d%3D%22M69.3%2C55.2l-0.3%2C0.4v1.3H68v-4.2h0.9v1.9l1.5-1.9h1.1l-1.7%2C2l1.8%2C2.2h-1.1L69.3%2C55.2z%22/%3E%0A%09%09%3Cpath%20class%3D%22st0%22%20d%3D%22M73.9%2C55.6c0.3%2C0.3%2C0.8%2C0.6%2C1.3%2C0.6c0.5%2C0%2C0.7-0.2%2C0.7-0.5c0-0.3-0.4-0.4-0.8-0.5c-0.7-0.2-1.6-0.3-1.6-1.3%0A%09%09%09c0-0.7%2C0.6-1.3%2C1.6-1.3c0.7%2C0%2C1.2%2C0.2%2C1.6%2C0.6l-0.5%2C0.7c-0.3-0.3-0.8-0.5-1.2-0.5c-0.4%2C0-0.6%2C0.2-0.6%2C0.4c0%2C0.3%2C0.4%2C0.4%2C0.8%2C0.5%0A%09%09%09c0.7%2C0.2%2C1.6%2C0.4%2C1.6%2C1.3c0%2C0.8-0.5%2C1.3-1.7%2C1.3c-0.8%2C0-1.4-0.3-1.8-0.7L73.9%2C55.6z%22/%3E%0A%09%09%3Cpath%20class%3D%22st0%22%20d%3D%22M79%2C52.7h2c0.9%2C0%2C1.4%2C0.6%2C1.4%2C1.3c0%2C0.7-0.5%2C1.3-1.4%2C1.3h-1.1v1.5H79V52.7z%20M80.9%2C53.5h-0.9v1.2h0.9%0A%09%09%09c0.4%2C0%2C0.6-0.2%2C0.6-0.6C81.5%2C53.7%2C81.2%2C53.5%2C80.9%2C53.5z%22/%3E%0A%09%09%3Cpath%20class%3D%22st0%22%20d%3D%22M84.6%2C52.7h0.9v3.4h1.8v0.8h-2.7V52.7z%22/%3E%0A%09%09%3Cpath%20class%3D%22st0%22%20d%3D%22M91.3%2C52.6c1.3%2C0%2C2.2%2C0.9%2C2.2%2C2.2c0%2C1.3-0.9%2C2.2-2.2%2C2.2c-1.3%2C0-2.2-0.9-2.2-2.2C89.1%2C53.5%2C90%2C52.6%2C91.3%2C52.6%0A%09%09%09z%20M91.3%2C53.4c-0.8%2C0-1.3%2C0.6-1.3%2C1.4c0%2C0.8%2C0.5%2C1.4%2C1.3%2C1.4c0.8%2C0%2C1.3-0.6%2C1.3-1.4C92.5%2C54%2C92%2C53.4%2C91.3%2C53.4z%22/%3E%0A%09%09%3Cpath%20class%3D%22st0%22%20d%3D%22M98.2%2C56.2h-1.9L96%2C56.9h-1l1.6-4.2h1.1l1.6%2C4.2h-1L98.2%2C56.2z%20M96.5%2C55.4h1.4l-0.7-1.9L96.5%2C55.4z%22/%3E%0A%09%09%3Cpath%20class%3D%22st0%22%20d%3D%22M102%2C53.5h-1.2v-0.8h3.3v0.8h-1.2v3.4H102V53.5z%22/%3E%0A%09%09%3Cpath%20class%3D%22st0%22%20d%3D%22M108.5%2C56.2h-1.9l-0.3%2C0.7h-1l1.6-4.2h1.1l1.6%2C4.2h-1L108.5%2C56.2z%20M106.9%2C55.4h1.4l-0.7-1.9L106.9%2C55.4z%22/%3E%0A%09%09%3Cpath%20class%3D%22st0%22%20d%3D%22M111.4%2C54.8c0-1.3%2C1-2.2%2C2.2-2.2c1%2C0%2C1.5%2C0.5%2C1.8%2C1l-0.8%2C0.4c-0.2-0.3-0.6-0.6-1-0.6c-0.7%2C0-1.3%2C0.6-1.3%2C1.4%0A%09%09%09c0%2C0.8%2C0.6%2C1.4%2C1.3%2C1.4c0.5%2C0%2C0.8-0.3%2C1-0.6l0.8%2C0.4c-0.3%2C0.5-0.8%2C1-1.8%2C1C112.3%2C57%2C111.4%2C56.1%2C111.4%2C54.8z%22/%3E%0A%09%09%3Cpath%20class%3D%22st0%22%20d%3D%22M117.5%2C55.9c0.2%2C0.2%2C0.4%2C0.3%2C0.7%2C0.3c0.4%2C0%2C0.7-0.3%2C0.7-0.7v-2.8h0.9v2.8c0%2C1-0.6%2C1.4-1.5%2C1.4%0A%09%09%09c-0.4%2C0-0.8-0.1-1.1-0.4L117.5%2C55.9z%22/%3E%0A%09%09%3Cpath%20class%3D%22st0%22%20d%3D%22M122.1%2C52.7h0.9v4.2h-0.9V52.7z%22/%3E%0A%09%09%3Cpath%20class%3D%22st0%22%20d%3D%22M129.9%2C55.2l-0.3%2C0.4v1.3h-0.9v-4.2h0.9v1.9l1.5-1.9h1.1l-1.7%2C2l1.8%2C2.2h-1.1L129.9%2C55.2z%22/%3E%0A%09%09%3Cpath%20class%3D%22st0%22%20d%3D%22M135.9%2C55.4h-0.7v1.5h-0.9v-4.2h2c0.9%2C0%2C1.4%2C0.6%2C1.4%2C1.3c0%2C0.7-0.5%2C1.1-0.9%2C1.2l0.9%2C1.6h-1L135.9%2C55.4z%0A%09%09%09%20M136.1%2C53.5h-0.9v1.2h0.9c0.4%2C0%2C0.6-0.2%2C0.6-0.6S136.5%2C53.5%2C136.1%2C53.5z%22/%3E%0A%09%09%3Cpath%20class%3D%22st0%22%20d%3D%22M140%2C52.7h0.9v2.5c0%2C0.6%2C0.3%2C1%2C1%2C1c0.6%2C0%2C1-0.4%2C1-1v-2.5h0.9v2.5c0%2C1-0.6%2C1.7-1.9%2C1.7c-1.3%2C0-1.9-0.7-1.9-1.7%0A%09%09%09V52.7z%22/%3E%0A%09%09%3Cpath%20class%3D%22st0%22%20d%3D%22M146.3%2C55.6c0.3%2C0.3%2C0.8%2C0.6%2C1.3%2C0.6c0.5%2C0%2C0.7-0.2%2C0.7-0.5c0-0.3-0.4-0.4-0.8-0.5c-0.7-0.2-1.6-0.3-1.6-1.3%0A%09%09%09c0-0.7%2C0.6-1.3%2C1.6-1.3c0.7%2C0%2C1.2%2C0.2%2C1.6%2C0.6l-0.5%2C0.7c-0.3-0.3-0.8-0.5-1.2-0.5c-0.4%2C0-0.6%2C0.2-0.6%2C0.4c0%2C0.3%2C0.4%2C0.4%2C0.8%2C0.5%0A%09%09%09c0.7%2C0.2%2C1.6%2C0.4%2C1.6%2C1.3c0%2C0.8-0.5%2C1.3-1.7%2C1.3c-0.8%2C0-1.4-0.3-1.8-0.7L146.3%2C55.6z%22/%3E%0A%09%09%3Cpath%20class%3D%22st0%22%20d%3D%22M151.4%2C56.2l2-2.7h-2v-0.8h3.1v0.7l-2%2C2.7h2v0.8h-3.2V56.2z%22/%3E%0A%09%09%3Cpath%20class%3D%22st0%22%20d%3D%22M158%2C55.2l-1.6-2.5h1l1%2C1.7l1-1.7h1l-1.6%2C2.5v1.7H158V55.2z%22/%3E%0A%09%09%3Cpath%20class%3D%22st0%22%20d%3D%22M165%2C54l-0.7%2C2.9h-0.9l-1.2-4.2h1l0.7%2C3l0.8-3h0.7l0.8%2C3l0.7-3h1l-1.2%2C4.2h-0.9L165%2C54z%22/%3E%0A%09%09%3Cpath%20class%3D%22st0%22%20d%3D%22M172.3%2C56.2h-1.9l-0.3%2C0.7h-1l1.6-4.2h1.1l1.6%2C4.2h-1L172.3%2C56.2z%20M170.6%2C55.4h1.4l-0.7-1.9L170.6%2C55.4z%22/%3E%0A%09%3C/g%3E%0A%09%3Cpath%20class%3D%22st1%22%20d%3D%22M48.9%2C45.9l0-1.3l4.5-4.5V16.9L30.7%2C3.8v-1l-3.7-2.1l-0.4-0.2l0%2C0l0%2C0l-0.4%2C0.2l-3.7%2C2.1v1L0%2C16.9v23.3%0A%09%09l4.5%2C4.5l0%2C1.3l5-3.5l-4.2-4.2l0-14.9l16.9%2C11.7l-8.9%2C6.2v0L1.7%2C49.4l0%2C0.1l0.9%2C0.9l4.3%2C4.4h10.3l-5.8-5.8l15.3-10.7l0%2C0l0%2C0%0A%09%09L42%2C48.9l-5.8%2C5.8h10.3l4.3-4.4l0.9-0.9l0-0.1L40%2C41.3v0l-8.9-6.2L48%2C23.4l0%2C14.9l-4.2%2C4.2L48.9%2C45.9z%20M25.5%2C31.1l-4.8-3.3l4.8-2.8%0A%09%09V31.1z%20M28.3%2C30.9v-5.7l4.5%2C2.6L28.3%2C30.9z%20M35.5%2C25.9l-5.8-3.4l0-1.1l-0.4-0.2L27%2C19.8l-0.3-0.2l0%2C0l0%2C0l-0.3%2C0.2l-2.3%2C1.3%0A%09%09l-0.4%2C0.2l0%2C1.1l-5.8%2C3.4L7.3%2C18.5l16.2-9.4l2.8%2C1.6l0.4%2C0.2l0%2C0l0%2C0l0.4-0.2l2.8-1.6l16.2%2C9.4L35.5%2C25.9z%22/%3E%0A%09%3Cg%3E%0A%09%09%3Cpath%20d%3D%22M77.4%2C18.6l-6.9%2C8c2.4%2C2.6%2C5.1%2C5.7%2C7.5%2C8.4v0.3H72l-4.8-5.6v5.6h-4.8v-17h4.8v5.6c1.5-1.8%2C3-3.8%2C4.5-5.6h5.7V18.6z%22/%3E%0A%09%09%3Cpath%20d%3D%22M83%2C23.3l0.3%2C1.3c0.6-1.1%2C1.7-1.6%2C2.9-1.6c1.2%2C0%2C2.4%2C0.5%2C3.1%2C1.3l-1.8%2C3.2c-0.7-0.6-1.3-0.7-2-0.7c-1.1%2C0-2.1%2C0.7-2.1%2C2.3%0A%09%09%09v6.2H79v-12H83z%22/%3E%0A%09%09%3Cpath%20d%3D%22M94.7%2C23.3v6.6c0%2C1.5%2C0.8%2C2%2C1.7%2C2c1.1%2C0%2C2.1-0.7%2C2.1-2.2v-6.4h4.4v12h-3.9l-0.2-1.3c-1%2C1.2-2.5%2C1.6-3.8%2C1.6%0A%09%09%09c-2.5%2C0-4.7-1.4-4.7-5.6v-6.6H94.7z%22/%3E%0A%09%09%3Cpath%20d%3D%22M106.1%2C30.7c1.8%2C1.2%2C3.3%2C1.3%2C4.2%2C1.3c0.8%2C0%2C1.2-0.2%2C1.2-0.6s-0.4-0.6-1.3-0.7c-2.3-0.1-5.1-1-5.1-3.9%0A%09%09%09c0-2.9%2C2.7-3.9%2C5.5-3.9c1.9%2C0%2C3.7%2C0.6%2C4.9%2C1.5l-1.9%2C2.7c-0.7-0.4-2-0.8-3-0.7c-0.6%2C0-1.1%2C0.1-1.1%2C0.6c0%2C0.2%2C0.2%2C0.6%2C0.9%2C0.6%0A%09%09%09c2.5%2C0.1%2C5.5%2C0.8%2C5.5%2C3.9c0%2C3-2.7%2C4.1-5.6%2C4.1c-2.1%2C0-4.4-0.6-5.8-1.6L106.1%2C30.7z%22/%3E%0A%09%09%3Cpath%20d%3D%22M127.6%2C23.3v1.5l-4.6%2C6.6h4.8v3.8h-10.7v-1.4l4.8-7h-4.3v-3.5H127.6z%22/%3E%0A%09%09%3Cpath%20d%3D%22M142.8%2C23.3l-7.4%2C17h-4.7l2.4-5.6l-4.7-11.4h4.7l1%2C2.9l1.3%2C4.1l1.5-4.2l1.1-2.8H142.8z%22/%3E%0A%09%09%3Cpath%20d%3D%22M154.1%2C23.3l2.1%2C6.7l0.9-3.4l1.1-3.3h4.7l-4.4%2C12h-4.1l-1.7-4.5l-1.6%2C4.5H147l-4.4-12h4.7l1.1%2C3.3l0.9%2C3.4l2.1-6.7H154.1z%0A%09%09%09%22/%3E%0A%09%09%3Cpath%20d%3D%22M176.9%2C29.3c0%2C4.4-3.5%2C6.2-6.8%2C6.2c-3.4%2C0-6.8-1.9-6.8-6.2c0-4.4%2C3.4-6.3%2C6.8-6.3C173.6%2C23%2C176.9%2C24.9%2C176.9%2C29.3z%0A%09%09%09%20M172.5%2C29.3c0-1.4-0.9-2.6-2.5-2.6c-1.6%2C0-2.5%2C1.2-2.5%2C2.6s0.9%2C2.6%2C2.5%2C2.6C171.6%2C31.9%2C172.5%2C30.7%2C172.5%2C29.3z%22/%3E%0A%09%09%3Cpath%20d%3D%22M195.2%2C23c-1.2-0.9-2.5-1.2-4-1.2c-1.2%2C0-2.3%2C0.4-2.3%2C1.3c0%2C1.2%2C1.1%2C1.3%2C2.8%2C1.5c3.4%2C0.4%2C6.9%2C1.7%2C6.9%2C5.6%0A%09%09%09c0%2C3.9-3.6%2C5.5-7.4%2C5.5c-3.1%2C0-5.2-0.5-7.6-3l2.6-3c1.7%2C1.6%2C3.5%2C1.9%2C5%2C1.9c1.6%2C0%2C2.7-0.6%2C2.7-1.5c0-0.8-1-1.4-2.8-1.6%0A%09%09%09c-3.7-0.3-6.9-1.3-6.9-5.5c0-3.6%2C3.5-5.1%2C7.1-5.1c2.5%2C0%2C4.5%2C0.6%2C6.3%2C2L195.2%2C23z%22/%3E%0A%09%09%3Cpath%20d%3D%22M202.6%2C31c3.2%2C0%2C3.2%2C4.4%2C0%2C4.4C199.4%2C35.4%2C199.4%2C31%2C202.6%2C31z%22/%3E%0A%09%09%3Cpath%20d%3D%22M219.5%2C32.5h-7.6l-1.1%2C2.8h-5.1l7.6-17h4.8l7.6%2C17h-5.1L219.5%2C32.5z%20M215.7%2C23l-2.2%2C5.4h4.3L215.7%2C23z%22/%3E%0A%09%09%3Cpath%20d%3D%22M228.8%2C31c3.2%2C0%2C3.2%2C4.4%2C0%2C4.4C225.6%2C35.4%2C225.5%2C31%2C228.8%2C31z%22/%3E%0A%09%3C/g%3E%0A%09%3Cg%3E%0A%09%09%3Crect%20x%3D%2222.9%22%20y%3D%2249.6%22%20transform%3D%22matrix%280.7071%20-0.7071%200.7071%200.7071%20-28.9443%2032.2325%29%22%20class%3D%22st1%22%20width%3D%223%22%20height%3D%223%22/%3E%0A%09%09%3Crect%20x%3D%2225.1%22%20y%3D%2251.7%22%20transform%3D%22matrix%280.7071%20-0.7071%200.7071%200.7071%20-29.8261%2034.3612%29%22%20class%3D%22st1%22%20width%3D%223%22%20height%3D%223%22/%3E%0A%09%09%3Crect%20x%3D%2227.2%22%20y%3D%2249.6%22%20transform%3D%22matrix%280.7071%20-0.7071%200.7071%200.7071%20-27.7085%2035.2383%29%22%20class%3D%22st1%22%20width%3D%223%22%20height%3D%223%22/%3E%0A%09%09%3Crect%20x%3D%2229.3%22%20y%3D%2247.5%22%20transform%3D%22matrix%280.7071%20-0.7071%200.7071%200.7071%20-25.591%2036.1154%29%22%20class%3D%22st1%22%20width%3D%223%22%20height%3D%223%22/%3E%0A%09%09%3Crect%20x%3D%2227.3%22%20y%3D%2245.6%22%20transform%3D%22matrix%280.7071%20-0.7071%200.7071%200.7071%20-24.7591%2034.1069%29%22%20class%3D%22st1%22%20width%3D%223%22%20height%3D%222.7%22/%3E%0A%09%09%3Cpolygon%20class%3D%22st1%22%20points%3D%2232.9%2C49%2035.1%2C53.2%2030.8%2C51.1%2030.8%2C51.1%2032.9%2C49%20%09%09%22/%3E%0A%09%09%3Crect%20x%3D%2222.9%22%20y%3D%2253.8%22%20transform%3D%22matrix%280.7071%20-0.7071%200.7071%200.7071%20-31.9436%2033.4841%29%22%20class%3D%22st1%22%20width%3D%223%22%20height%3D%223%22/%3E%0A%09%09%3Crect%20x%3D%2222.1%22%20y%3D%2255.4%22%20transform%3D%22matrix%280.7071%20-0.7071%200.7071%200.7071%20-33.5317%2032.8263%29%22%20class%3D%22st1%22%20width%3D%221.5%22%20height%3D%223%22/%3E%0A%09%09%3Crect%20x%3D%2227.2%22%20y%3D%2253.8%22%20transform%3D%22matrix%280.7071%20-0.7071%200.7071%200.7071%20-30.7078%2036.4899%29%22%20class%3D%22st1%22%20width%3D%223%22%20height%3D%223%22/%3E%0A%09%09%3Crect%20x%3D%2228.8%22%20y%3D%2256.2%22%20transform%3D%22matrix%280.7071%20-0.7071%200.7071%200.7071%20-31.3703%2038.0892%29%22%20class%3D%22st1%22%20width%3D%223%22%20height%3D%221.5%22/%3E%0A%09%09%3Crect%20x%3D%2220.8%22%20y%3D%2247.4%22%20transform%3D%22matrix%280.7071%20-0.7071%200.7071%200.7071%20-28.0672%2030.115%29%22%20class%3D%22st1%22%20width%3D%223%22%20height%3D%223%22/%3E%0A%09%09%3Crect%20x%3D%2223%22%20y%3D%2245.4%22%20transform%3D%22matrix%280.7071%20-0.7071%200.7071%200.7071%20-26.0699%2030.9423%29%22%20class%3D%22st1%22%20width%3D%222.7%22%20height%3D%223%22/%3E%0A%09%09%3Crect%20x%3D%2219%22%20y%3D%2249.4%22%20transform%3D%22matrix%280.7071%20-0.7071%200.7071%200.7071%20-30.0646%2029.2877%29%22%20class%3D%22st1%22%20width%3D%222.7%22%20height%3D%223%22/%3E%0A%09%3C/g%3E%0A%3C/g%3E%0A%3C/svg%3E%0A"></div>
+    <div>
+      <h2>OFERTA SPRZEDAŻY KRUSZYW</h2>
+      <div>Data: ${new Date().toLocaleDateString('pl-PL')}</div>
+    </div>
+  </div>
+
+  <h3>DANE KLIENTA</h3>
+  <p><b>Nazwa:</b> ${clientName.value||''}<br>
+  <b>Telefon:</b> ${clientPhone.value||''}<br>
+  <b>Adres:</b> ${deliveryAddress.value||''}</p>
+
+  <table>
+  <tr><th>Lp.</th><th>Kopalnia</th><th>Produkt</th><th>Ilość</th><th>Cena netto</th><th>Wartość netto</th></tr>
+  ${rows}
+  </table>
+
+  <div class="summary">
+    <h3>PODSUMOWANIE</h3>
+    <div class="row"><span>Razem netto</span><b>${netto.toFixed(2)} zł</b></div>
+    <div class="row"><span>VAT 23%</span><b>${vat.toFixed(2)} zł</b></div>
+    <div class="row gross"><span>Razem brutto</span><b>${brutto.toFixed(2)} zł</b></div>
+  </div>
+
+  <div class="notes"><b>UWAGI</b><br><br>${notesFinal}</div>
+
+  <div style="margin-top:35px;border-top:1px solid #ccc;padding-top:12px">
+  <b>Mirosław Górka</b><br>
+  Specjalista ds. Handlu, Marketingu i Rozwoju<br>
+  Kruszywo S.A.<br>
+  tel. 511 887 792
+  </div>
+
+  </body></html>`);
+  w.document.close();
+  w.print();
+}
+
+fillSelectors(); loadPricesFromSheet(); renderClients(); renderHistory(); syncPrice(); try{document.getElementById("quick").classList.add("hidden");}catch(e){} show("calc");
+if ('serviceWorker' in navigator) { navigator.serviceWorker.register('./sw.js?v=21b'); }
+
+function savePriceStore(){localStorage.setItem('priceData_v21b',JSON.stringify(priceData));}
+function savePrices(){savePriceStore();alert('Cennik zapisany');}
+function addQuarry(){let n=prompt('Nazwa kopalni');if(!n)return;if(priceData[n])return alert('Istnieje');priceData[n]={rate:0,products:{}};savePriceStore();if(fillSelectors)fillSelectors();}
+function deleteQuarry(){let q=document.getElementById('priceQuarry')?.value;if(!q)return;if(!confirm('Usunąć?'))return;delete priceData[q];savePriceStore();if(fillSelectors)fillSelectors();}
+function addFraction(){
+let q=document.getElementById('priceQuarry')?.value;
+if(!q)return;
+let f=prompt('Nazwa frakcji');
+if(!f)return;
+let p=prompt('Cena frakcji','0');
+priceData[q].products[f]=Number(p||0);
+persistPrices();
+if(renderPriceEditor)renderPriceEditor();
+}
+
+function saveQuote(){
+ const tc=Number(document.getElementById('transportCost')?.value||0);
+ let total=0; quoteItems.forEach(x=> total+=Number(x.value||0));
+ const offer=(typeof offerBox!=='undefined')?offerBox.value:'';
+ quotes.unshift({
+   id:Date.now(),date:new Date().toLocaleString("pl-PL"),timestamp:Date.now(),
+   client:clientName.value||"",phone:clientPhone.value||"",address:deliveryAddress.value||"",
+   transportCost:tc, items: JSON.parse(JSON.stringify(quoteItems)),
+   total:total, grand: total+tc, offer:offer
+ });
+ persistQuotes(); renderHistory(); alert('Wycena zapisana');
+}
+function renderHistory(){
+ const txt=(historyClientSearch.value||'').toLowerCase().trim();
+ const qf=(historyQuarryFilter.value||'');
+ const sm=(historySort.value||'newest');
+
+ let arr=[...quotes];
+
+ if(txt){
+   arr=arr.filter(item=>{
+      const data=((item.client||'')+' '+(item.phone||'')+' '+(item.address||'')).toLowerCase();
+      return data.includes(txt);
+   });
+ }
+
+ if(qf){
+   arr=arr.filter(item=>(item.items||[]).some(p=>p.quarry===qf));
+ }
+
+ arr.sort((a,b)=>sm==='oldest'
+   ? Number(a.timestamp||0)-Number(b.timestamp||0)
+   : Number(b.timestamp||0)-Number(a.timestamp||0));
+
+ historyList.innerHTML='';
+
+ arr.forEach(item=>{
+   const idx=quotes.findIndex(q=>q.id===item.id);
+   let pos=(item.items||[]).map(p=>'• '+p.quarry+' | '+p.product+' | '+p.qty).join('<br>');
+   const div=document.createElement('div');
+   div.className='quote';
+   div.innerHTML='<b>'+item.date+'</b><br><span class="small">'+(item.client||'')+'</span><br>'+pos+
+   '<br><span class="small">Razem: '+Number(item.grand||0).toFixed(2)+' zł</span>'+
+   '<div class="client-actions"><button class="secondary" onclick="loadQuote('+idx+')">Wczytaj</button><button class="secondary" onclick="deleteQuote('+idx+')">Usuń</button></div>';
+   historyList.appendChild(div);
+ });
+
+ if(!arr.length){
+   historyList.innerHTML='<div class="small">Brak wycen dla podanych filtrów.</div>';
+ }
+}
+function loadQuote(i){
+ const q=quotes[i]; if(!q) return;
+ quoteItems=q.items||[];
+ renderQuoteItems(); calc();
+ clientName.value=q.client||'';
+ clientPhone.value=q.phone||'';
+ deliveryAddress.value=q.address||'';
+ transportCost.value=q.transportCost||0;
+ calc();
+ show('calc');
+}
+
+
+
+
+
+/* usunięto zdublowaną funkcję printOffer */
+
+
+
+
+
+function exportClients(){
+ const data=(clients||[]);
+ const rows=[['Nazwa','Telefon','Miejscowość','Segment','Etap','Następny kontakt','Notatki']];
+ data.forEach(c=>rows.push([c.name||'',c.phone||'',c.address||'',c.segment||'',c.stage||'',c.nextContact||'',c.notes||'']));
+ const csv=rows.map(r=>r.map(v=>'"'+String(v).replace(/"/g,'""')+'"').join(';')).join('\n');
+ const csvContent='\uFEFF'+csv;
+ const blob=new Blob([csvContent],{type:'text/csv;charset=utf-8;'});
+ const a=document.createElement('a');
+ a.href=URL.createObjectURL(blob);
+ a.download='Klienci.csv';
+ a.click();
+}
+
+function importClients(){
+ const f=document.getElementById('importClientsFile').files[0];
+ if(!f) return;
+ const r=new FileReader();
+ r.onload=e=>{
+   const lines=e.target.result.split(/\r?\n/).filter(x=>x.trim());
+   const out=[];
+   for(let i=1;i<lines.length;i++){
+     const c=lines[i].split(';').map(x=>x.replace(/^"|"$/g,''));
+     out.push({id:Date.now()+i,name:c[0]||'',phone:c[1]||'',address:c[2]||'',segment:c[3]||'B',stage:c[4]||'Lead',nextContact:c[5]||'',notes:c[6]||''});
+   }
+   clients=out;
+   persistClients();
+   renderClients();
+   renderClientChoices();
+   alert('Zaimportowano klientów');
+ };
+ r.readAsText(f,'utf-8');
+}
+
+function exportPrices(){
+ const rows=[['Kopalnia','Produkt','Cena netto']];
+ Object.keys(priceData).forEach(q=>{
+   Object.keys(priceData[q].products).forEach(p=>{
+      rows.push([q,p,priceData[q].products[p]]);
+   });
+ });
+ const csv=rows.map(r=>r.map(v=>'"'+String(v).replace(/"/g,'""')+'"').join(';')).join('\n');
+ const csvContent='\uFEFF'+csv;
+ const blob=new Blob([csvContent],{type:'text/csv;charset=utf-8;'});
+ const a=document.createElement('a');
+ a.href=URL.createObjectURL(blob);
+ a.download='Cennik_Kruszywo.csv';
+ a.click();
+}
+
+
+function exportBackup(){
+ const backup={
+   clients:clients,
+   priceData:priceData,
+   quotes:quotes
+ };
+ const blob=new Blob([JSON.stringify(backup,null,2)],{type:'application/json'});
+ const a=document.createElement('a');
+ a.href=URL.createObjectURL(blob);
+ a.download='Backup_Kruszywo_'+new Date().toISOString().slice(0,10)+'.json';
+ a.click();
+}
+
+function importBackup(){
+ const file=document.getElementById('importBackupFile').files[0];
+ if(!file) return;
+
+ const reader=new FileReader();
+ reader.onload=e=>{
+   try{
+     const data=JSON.parse(e.target.result);
+
+     if(data.clients) clients=data.clients;
+     if(data.priceData) priceData=data.priceData;
+     if(data.quotes) quotes=data.quotes;
+
+     persistClients();
+     persistPrices();
+     persistQuotes();
+
+     fillSelectors();
+     renderClients();
+     renderHistory();
+     renderPriceEditor();
+
+     alert('Backup został przywrócony');
+   }catch(err){
+     alert('Nie udało się wczytać backupu');
+   }
+ };
+ reader.readAsText(file,'utf-8');
+}
+
+
+function copyToOutlook(){
+ navigator.clipboard.writeText(document.getElementById('offerBox').value||'');
+ alert('Oferta skopiowana. Wklej Ctrl+V do Outlooka.');
+}
+
+
+function renderStats(){
+ const allQuotes=(quotes||[]);
+
+ let total=0;
+ const quarry={};
+ const product={};
+ const clients={};
+
+ allQuotes.forEach(q=>{
+   total += Number(q.grand || q.total || 0);
+
+   if(q.client){
+      clients[q.client]=(clients[q.client]||0)+1;
+   }
+
+   (q.items||[]).forEach(i=>{
+      if(i.quarry) quarry[i.quarry]=(quarry[i.quarry]||0)+1;
+      if(i.product) product[i.product]=(product[i.product]||0)+1;
+   });
+ });
+
+ const topQ=Object.entries(quarry).sort((a,b)=>b[1]-a[1]).slice(0,10);
+ const topP=Object.entries(product).sort((a,b)=>b[1]-a[1]).slice(0,10);
+ const topC=Object.entries(clients).sort((a,b)=>b[1]-a[1]).slice(0,10);
+
+ document.getElementById('statsBox').innerHTML=`
+ <div class="result-box">
+ <b>Liczba ofert:</b> ${allQuotes.length}<br>
+ <b>Łączna wartość ofert:</b> ${total.toFixed(2)} zł
+ </div>
+
+ <h4>Najczęściej oferowane kopalnie</h4>
+ ${topQ.length ? topQ.map(x=>x[0]+' ('+x[1]+')').join('<br>') : 'Brak danych'}
+
+ <h4>Najczęściej oferowane produkty</h4>
+ ${topP.length ? topP.map(x=>x[0]+' ('+x[1]+')').join('<br>') : 'Brak danych'}
+
+ <h4>Najaktywniejsi klienci</h4>
+ ${topC.length ? topC.map(x=>x[0]+' ('+x[1]+' ofert)').join('<br>') : 'Brak danych'}
+ `;
+}
+
+
+
+function updateOfferNotesByTransport(){
+ const t = Number(document.getElementById('transportCost')?.value || 0);
+ const notes = document.getElementById('offerNotes');
+ if(!notes) return;
+
+ if(t > 0){
+   notes.value = notes.value.replace('Odbiór loco kopalnia.\n','');
+   if(!notes.value.includes('Transport wliczony w ofertę.')){
+      notes.value = 'Transport wliczony w ofertę.\n' + notes.value;
+   }
+ }else{
+   notes.value = notes.value.replace('Transport wliczony w ofertę.\n','');
+   if(!notes.value.includes('Odbiór loco kopalnia.')){
+      notes.value = 'Odbiór loco kopalnia.\n' + notes.value;
+   }
+ }
+}
+
+document.getElementById('transportCost')?.addEventListener('input', updateOfferNotesByTransport);
+updateOfferNotesByTransport();
+
+function updateOfferNotesByTransport(){
+  const notes=document.getElementById('offerNotes');
+  const tc=document.getElementById('transportCost');
+  if(!notes || !tc) return;
+
+  const t=Number(tc.value||0);
+
+  if(t>0){
+    notes.value=notes.value.replace(/Odbiór loco kopalnia\.\n?/g,'');
+    if(!notes.value.includes('Transport wliczony w ofertę.')){
+      notes.value='Transport wliczony w ofertę.\n'+notes.value;
+    }
+  }else{
+    notes.value=notes.value.replace(/Transport wliczony w ofertę\.\n?/g,'');
+    if(!notes.value.includes('Odbiór loco kopalnia.')){
+      notes.value='Odbiór loco kopalnia.\n'+notes.value;
+    }
+  }
+}
+
+window.addEventListener('load',()=>{
+ const tc=document.getElementById('transportCost');
+ if(tc){
+   tc.addEventListener('input',updateOfferNotesByTransport);
+   tc.addEventListener('change',updateOfferNotesByTransport);
+ }
+ updateOfferNotesByTransport();
+});
+
+
+function selectQuoteItem(i){
+ const x=quoteItems[i];
+ if(!x) return;
+
+ quarry.value=x.quarry||'';
+ renderProducts(true);
+ product.value=x.product||'';
+ price.value=x.price||0;
+ qty.value=x.qty||0;
+ if(window.discountValue) discountValue.value=x.discount||0;
+
+ editIndex=i;
+
+ const btn=document.getElementById('quoteBtn');
+ if(btn) btn.textContent='💾 Aktualizuj pozycję';
+
+ calc();
+}
+
+</script>
+</body>
+</html>
